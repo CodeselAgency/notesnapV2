@@ -22,7 +22,6 @@ import { CreateBoardModal } from "./UI/CreateBoardModal";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import router from "next/router";
 import { useSubscription } from "@/hooks/useSubscription";
 
 interface DashboardSidebarProps {
@@ -281,6 +280,8 @@ export function DashboardSidebar({
     createBoard,
   } = useBoard();
   const { signOut } = useAuth();
+
+  const router = useRouter();
 
   useEffect(() => {
     loadProfile();
