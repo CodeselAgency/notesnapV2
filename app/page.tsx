@@ -1,3 +1,4 @@
+"use client";
 import Hero from "@/components/Home/Hero";
 import Mockup from "@/components/Home/Mockup";
 import Trust from "@/components/Home/Trust";
@@ -12,8 +13,19 @@ import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
 import Script from "next/script";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import Testimonals from "@/components/Home/Testimonals";
-
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 export default function Home() {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
+
   return (
     <div className="min-h-screen bg-white font-sans relative">
       <Script
