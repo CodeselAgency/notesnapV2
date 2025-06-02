@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Outfit, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvide";
 import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
@@ -10,6 +10,11 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-inter-tight",
+  weight: ["400", "700"],
+});
 export const metadata: Metadata = {
   title: "Notesnap - AI PDF Assistant – Chat, Summarize & Understand Documents",
   description:
@@ -59,7 +64,7 @@ export default function RootLayout({
         name="google-site-verification"
         content="spvP63Uc5ZNtw9zq9SPVVul2xphtbLG0rdbxk0NxPHg"
       />
-      <body className={`${outfit.className} antialiased`}>
+      <body className={`${interTight.className} antialiased`}>
         <GoogleAnalytics />
         <AuthProvider>{children}</AuthProvider>
       </body>

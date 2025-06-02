@@ -359,7 +359,7 @@ export function DashboardSidebar({
 
   const handleLogout = async () => {
     await signOut();
-    router.push("/signin");
+    router.push("/");
   };
 
   return (

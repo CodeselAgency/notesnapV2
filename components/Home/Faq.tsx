@@ -132,7 +132,7 @@ const Faq = () => {
 
     return (
       <div
-        className={`mb-4 shadow-sm pb-2 p-2 rounded-xl transition-all duration-800 `}
+        className={`mb-4 border-2 border-zinc-100 px-4 pb-2 p-2 rounded-xl transition-all duration-800 cursor-pointer`}
       >
         <button
           onClick={onClick}

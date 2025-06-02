@@ -109,7 +109,7 @@ export const NavItems = ({ items, className }: NavItemsProps) => {
             key={`link-${idx}`}
           >
             <span
-              className={`relative z-20 font-semibold text-black dark:text-white :
+              className={`relative z-20 font-inter-tight font-medium text-black dark:text-white :
               ${isActive ? "" : "opacity-60 hover:opacity-100"}
               `}
             >

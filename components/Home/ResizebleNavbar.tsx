@@ -89,7 +89,7 @@ export function ResizableNavbar() {
                           >
                             <div className="absolute -top-2 right-6 w-4 h-4 bg-zinc-900/90 border-t border-l border-zinc-700 rotate-45 z-10"></div>
                             <Link href="/dashboard">
-                              <div className="block px-4 py-2 text-sm text-white cursor-pointer font-semibold rounded transition">
+                              <div className="block px-4 py-2 text-sm text-white cursor-pointer font-medium rounded transition">
                                 Dashboard
                               </div>
                             </Link>

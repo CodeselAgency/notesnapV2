@@ -1,33 +1,22 @@
-"use client";
+// "use client";
+
 import Hero from "@/components/Home/Hero";
-import Mockup from "@/components/Home/Mockup";
+import MockUp from "@/components/Home/Mockup";
 import Trust from "@/components/Home/Trust";
-import BentoGrids from "@/components/Home/BentoGrid";
-import Image from "next/image";
-import HowItWorks from "@/components/Home/HowitWorks";
-import Testimonials from "@/components/Home/Testimonals";
+import Testimonals from "@/components/Home/Testimonals";
 import Faq from "@/components/Home/Faq";
 import Footer from "@/components/Home/Footer";
-import Pricing from "@/components/Home/Pricing";
-import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
 import Script from "next/script";
-import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
-import Testimonals from "@/components/Home/Testimonals";
-import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import Process from "@/components/Home/Process";
+import HowItWorks from "@/components/Home/HowitWorks";
+import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
+import BentoGrid from "@/components/Home/BentoGrid";
 export default function Home() {
-  const { user } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      router.push("/dashboard");
-    }
-  }, [user, router]);
-
   return (
-    <div className="min-h-screen bg-white font-sans relative">
+    <div
+      className="min-h-screen bg-white font-sans relative"
+      // style={{ fontFamily: "'Satoshi', sans-serif" }}
+    >
       <Script
         id="structured-data"
         type="application/ld+json"
@@ -40,7 +29,7 @@ export default function Home() {
               applicationCategory: "ProductivityApplication",
               operatingSystem: "Web",
               description:
-                "AI PDF Assistant – Chat, Summarize & Understand Documents. Use AI to chat with your PDFs, summarize content, and generate insights instantly.",
+                "AI PDF Assistant - Chat, Summarize & Understand Documents. Use AI to chat with your PDFs, summarize content, and generate insights instantly.",
               offers: {
                 "@type": "Offer",
                 price: "0",
@@ -88,24 +77,26 @@ export default function Home() {
         }}
       />
 
-      <SmoothScrollProvider>
-        <ResizableNavbar />
+      {/* <SmoothScrollProvider> */}
 
         <div className="relative z-10">
           {/* Header/Navigation */}
 
           {/* <Navbar /> */}
+          <ResizableNavbar />
           <Hero />
 
-          <Mockup />
+          <MockUp />
+          
           <Trust />
-          <BentoGrids />
-          <HowItWorks />
+          <BentoGrid />
+          {/* <HowItWorks /> */}
+          <Process />
           <Testimonals />
           <Faq />
           <Footer />
         </div>
-      </SmoothScrollProvider>
+      {/* </SmoothScrollProvider> */}
     </div>
   );
 }

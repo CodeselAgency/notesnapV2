@@ -248,7 +248,7 @@ const Hero = () => {
               </div>
               <div className="flex flex-col items-center sm:items-start">
                 <span className="text-sm sm:text-base font-semibold text-gray-800">
-                  Join 5,000+ students
+                  Join 10,000+ students
                 </span>
                 <div className="flex items-center gap-1">
                   <div className="flex text-yellow-400 text-sm">
