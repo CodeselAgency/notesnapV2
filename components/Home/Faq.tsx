@@ -219,7 +219,7 @@ const Faq = () => {
 
         {/* Additional help section */}
         <div className="mt-16 flex justify-center items-center gap-4 max-sm:flex-col">
-          <p className="text-gray-600 font-bold text-lg font-inter text-center m-0">
+          <p className="text-gray-600 font-medium text-lg font-inter text-center m-0">
             Still have questions?
           </p>
 
