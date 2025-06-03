@@ -3,6 +3,7 @@ import { Outfit, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvide";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
       <body className={`${interTight.className} antialiased`}>
         <AuthProvider>{children}</AuthProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
