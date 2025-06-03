@@ -150,11 +150,11 @@ const Footer = () => {
                   Legal
                 </h4>
                 <ul>
-                  <FooterLink href="/terms-and-conditions">
+                  <FooterLink href="/terms-of-service">
                     Terms of Service
                   </FooterLink>
                   <FooterLink href="/privacypolicy">Privacy Policy</FooterLink>
-                  <FooterLink href="/refundpolicy">Refund Policy</FooterLink>
+                  {/* <FooterLink href="/refundpolicy">Refund Policy</FooterLink> */}
                 </ul>
               </div>
             </div>

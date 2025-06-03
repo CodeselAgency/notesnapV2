@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import Hero from "@/components/Home/Hero";
 import MockUp from "@/components/Home/Mockup";
@@ -11,7 +11,16 @@ import Process from "@/components/Home/Process";
 import HowItWorks from "@/components/Home/HowitWorks";
 import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
 import BentoGrid from "@/components/Home/BentoGrid";
+import { useAuth } from "@/hooks/useAuth";
+import { redirect } from "next/navigation";
+
 export default function Home() {
+  const { user } = useAuth();
+
+  if (user) {
+    redirect("/dashboard");
+  }
+
   return (
     <div
       className="min-h-screen bg-white font-sans relative"
@@ -79,23 +88,23 @@ export default function Home() {
 
       {/* <SmoothScrollProvider> */}
 
-        <div className="relative z-10">
-          {/* Header/Navigation */}
+      <div className="relative z-10">
+        {/* Header/Navigation */}
 
-          {/* <Navbar /> */}
-          <ResizableNavbar />
-          <Hero />
+        {/* <Navbar /> */}
+        <ResizableNavbar />
+        <Hero />
 
-          <MockUp />
-          
-          <Trust />
-          <BentoGrid />
-          {/* <HowItWorks /> */}
-          <Process />
-          <Testimonals />
-          <Faq />
-          <Footer />
-        </div>
+        <MockUp />
+
+        <Trust />
+        <BentoGrid />
+        {/* <HowItWorks /> */}
+        <Process />
+        <Testimonals />
+        <Faq />
+        <Footer />
+      </div>
       {/* </SmoothScrollProvider> */}
     </div>
   );
