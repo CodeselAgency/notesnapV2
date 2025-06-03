@@ -96,7 +96,7 @@ export const POST = Webhooks({
             const subscription = payload.data;
 
             // Only handle monthly and yearly subscriptions
-            if (!['month', 'year'].includes(subscription.recurring_interval)) {
+            if (!['month', 'year'].includes(subscription.recurringInterval)) {
                 console.log('Skipping non-monthly/yearly subscription:', subscription.id);
                 return;
             }
