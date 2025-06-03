@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Outfit, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvide";
-import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
-import GoogleAnalytics from "@/components/Analytics/GoogleAnalytics";
+import { Analytics } from "@vercel/analytics/next";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -65,8 +64,8 @@ export default function RootLayout({
         content="spvP63Uc5ZNtw9zq9SPVVul2xphtbLG0rdbxk0NxPHg"
       />
       <body className={`${interTight.className} antialiased`}>
-        <GoogleAnalytics />
         <AuthProvider>{children}</AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
