@@ -3,7 +3,7 @@ import { Checkout } from "@polar-sh/nextjs";
 
 export const GET = Checkout({
     accessToken: process.env.POLAR_ACCESS_TOKEN,
-    successUrl: "http://localhost:3000/checkout/success",
+    successUrl: "https://www.notesnap.app/checkout/success",
     server: "sandbox",
     // Use sandbox if you're testing Polar - omit the parameter or pass 'production' otherwise
 });
