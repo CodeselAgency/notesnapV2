@@ -150,14 +150,14 @@ export default function SignIn() {
         <p className="text-center text-sm text-slate-500 pt-6">
           By continuing, you agree to NoteSnap&apos;s <br />
           <a
-            href="/terms"
+            href="/terms-of-service"
             className="font-medium text-indigo-500 hover:text-indigo-700 underline"
           >
             Terms of Service
           </a>{" "}
           and{" "}
           <a
-            href="/privacy"
+            href="/privacypolicy"
             className="font-medium text-indigo-500 hover:text-indigo-700 underline"
           >
             Privacy Policy
