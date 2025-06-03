@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import React, { useState, ChangeEvent } from "react";
-import { useRouter } from "next/navigation"; // Add this import
+import type React from "react";
+import { useState, type ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
 import {
   Plus,
   FileText,
@@ -14,19 +15,17 @@ import {
   BookOpen,
   Brain,
   FileCheck,
+  AlertCircle,
 } from "lucide-react";
-import BoardListItem from "@/components/UI/BoardItemList";
 import { useDispatch } from "react-redux";
-import { createBoard } from "@/store/slices/boardSlice";
 import { usePdf } from "@/hooks/usePdf";
-import { useBoard } from "@/hooks/useBoard";
 import DocumentListItem from "@/components/UI/DocumentListItem";
 
 // Updated board type to match your actual data structure
 type Board = {
   id: string;
   user_id: string;
-  name: string; // Changed from 'title' to 'name'
+  name: string;
   description: string;
   color: string;
   is_default: boolean;
@@ -52,10 +51,12 @@ const Dashboard = () => {
   const [currentProcessingStep, setCurrentProcessingStep] = useState(0);
   const [uploadedDocumentId, setUploadedDocumentId] = useState<string | null>(
     null
-  ); // Add this state
+  );
+  // Enhanced error state management
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
-  const router = useRouter(); // Add this hook
+  const router = useRouter();
   const { uploadFile, loading, uploads, error, clearError } = usePdf();
   const { files, loading: pdfLoading, error: pdfError, loadPdfs } = usePdf();
 
@@ -74,6 +75,9 @@ const Dashboard = () => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       setSelectedFile(file);
+      // Clear any previous errors when selecting a new file
+      setUploadError(null);
+      clearError();
       console.log("Selected file:", file.name);
     }
   };
@@ -81,34 +85,46 @@ const Dashboard = () => {
   // Updated processing steps with better styling
   const processingSteps = [
     {
+      step: "Uploading PDF...",
       icon: Upload,
       message: "Uploading your PDF...",
       color: "text-blue-600",
       bgColor: "bg-blue-50",
     },
     {
+      step: "Extracting content...",
       icon: FileCheck,
       message: "Extracting content...",
       color: "text-green-600",
       bgColor: "bg-green-50",
     },
     {
-      icon: Brain,
+      step: "Generating notes...",
+      icon: FileText,
       message: "Analyzing document...",
       color: "text-purple-600",
       bgColor: "bg-purple-50",
     },
     {
-      icon: FileText,
+      step: "Creating quizzes...",
+      icon: Brain,
       message: "Generating notes...",
       color: "text-orange-600",
       bgColor: "bg-orange-50",
     },
     {
+      step: "Building flashcards...",
       icon: BookOpen,
       message: "Creating flashcards...",
       color: "text-pink-600",
       bgColor: "bg-pink-50",
+    },
+    {
+      step: "Finalizing...",
+      icon: CheckCircle,
+      message: "Finalizing...",
+      color: "text-green-600",
+      bgColor: "bg-green-50",
     },
   ];
 
@@ -118,10 +134,20 @@ const Dashboard = () => {
     if (uploadState === "processing") {
       interval = setInterval(() => {
         setCurrentProcessingStep((prev) => (prev + 1) % processingSteps.length);
-      }, 2000); // Change step every 2 seconds
+      }, 2000);
     }
     return () => clearInterval(interval);
-  }, [uploadState]);
+  }, [uploadState, processingSteps.length]);
+
+  // Enhanced error monitoring from Redux
+  useEffect(() => {
+    if (error && uploadState !== "idle") {
+      setUploadState("error");
+      setUploadError(error);
+      setProcessingStep("");
+      setUploadProgress(0);
+    }
+  }, [error, uploadState]);
 
   // Monitor upload progress from Redux
   useEffect(() => {
@@ -136,140 +162,198 @@ const Dashboard = () => {
         case "uploading":
           setUploadState("uploading");
           setProcessingStep("Uploading PDF...");
+          setUploadError(null); // Clear any previous errors
           break;
         case "processing":
           setUploadState("processing");
           setProcessingStep("Processing PDF...");
+          setUploadError(null);
           break;
         case "completed":
           setUploadState("success");
           setProcessingStep("Processing complete!");
+          setUploadError(null);
 
-          // Store the uploaded document ID if available
           if (currentUpload.documentId) {
             setUploadedDocumentId(currentUpload.documentId);
           }
 
-          // Auto close after success and redirect
           setTimeout(() => {
-            // Refresh the PDF list to show the new document
             loadPdfs();
 
-            // If we have a document ID, redirect to it
             if (currentUpload.documentId) {
               router.push(`/dashboard/snaps/${currentUpload.documentId}`);
             }
 
-            // Reset modal state
-            setIsUploadModalOpen(false);
-            setSelectedFile(null);
-            setUploadState("idle");
-            setProcessingStep("");
-            setUploadProgress(0);
-            setCurrentProcessingStep(0);
-            setUploadedDocumentId(null);
+            resetModalState();
           }, 2000);
           break;
         case "error":
           setUploadState("error");
+          // Error message should come from the upload object or Redux error
+          setUploadError(currentUpload.error || error || "Upload failed");
+          setProcessingStep("");
+          setUploadProgress(0);
           break;
       }
     }
-  }, [uploads, selectedFile?.name, loadPdfs, router]);
+  }, [uploads, selectedFile?.name, loadPdfs, router, error]);
 
   // Monitor general loading state
   useEffect(() => {
     if (loading && uploadState === "idle" && selectedFile) {
       setUploadState("uploading");
       setProcessingStep("Uploading PDF...");
+      setUploadError(null);
     }
   }, [loading, uploadState, selectedFile]);
 
   const boardId = undefined;
 
+  // Enhanced handleUpload with better error handling
   const handleUpload = async () => {
     if (selectedFile) {
+      setUploadState("uploading");
+      setProcessingStep("Uploading PDF...");
+      setUploadError(null);
+      clearError(); // Clear Redux errors
+
+      const onProgress = (progress: number) => {
+        setUploadProgress(progress);
+        if (progress > 10 && progress < 100) {
+          setUploadState("processing");
+          if (progress < 30) {
+            setProcessingStep("Extracting content...");
+          } else if (progress < 50) {
+            setProcessingStep("Generating notes...");
+          } else if (progress < 70) {
+            setProcessingStep("Creating quizzes...");
+          } else if (progress < 90) {
+            setProcessingStep("Building flashcards...");
+          } else {
+            setProcessingStep("Finalizing...");
+          }
+        }
+      };
+
       try {
-        setUploadState("uploading");
-        setProcessingStep("Uploading PDF...");
-
-        // After a short delay, switch to processing for better UX
-        setTimeout(() => {
-          if (uploadState !== "error") {
-            setUploadState("processing");
-          }
-        }, 1500);
-
-        // Progress callback to track upload progress
-        const onProgress = (progress: number) => {
-          setUploadProgress(progress);
-          if (progress > 10 && progress < 100) {
-            setUploadState("processing");
-            // Set different processing steps based on progress
-            if (progress < 30) {
-              setProcessingStep("Extracting content...");
-            } else if (progress < 50) {
-              setProcessingStep("Generating notes...");
-            } else if (progress < 70) {
-              setProcessingStep("Creating quizzes...");
-            } else if (progress < 90) {
-              setProcessingStep("Building flashcards...");
-            } else {
-              setProcessingStep("Finalizing...");
-            }
-          }
-        };
-
         // Call uploadFile and get the response
-        const response = await uploadFile(selectedFile, boardId, onProgress);
-        // Log the response to see what we get back
-        console.log("Upload response:", response.payload.pdf.id);
+        const result = await uploadFile(selectedFile, boardId, onProgress);
 
-        // If the response contains the document ID, store it
-        if (response && response.payload.pdf.id) {
-          setUploadedDocumentId(response.payload.pdf.id);
+        // Check if the result indicates an error (Redux Toolkit rejected action)
+        if (result && result.type && result.type.endsWith("/rejected")) {
+          // This is a rejected action, extract the error message
+          const errorMessage =
+            result.payload || result.error?.message || "Upload failed";
+          throw new Error(errorMessage);
+        }
 
-          // If upload is immediately successful, handle the success state
+        // Check for other error patterns
+        if (result && typeof result === "object" && "error" in result) {
+          const errorMessage =
+            result.payload || result.error?.message || "Upload failed";
+          throw new Error(errorMessage);
+        }
+
+        // Success case - check if we have the expected response structure
+        if (
+          result &&
+          result.payload &&
+          result.payload.pdf &&
+          result.payload.pdf.id
+        ) {
+          setUploadedDocumentId(result.payload.pdf.id);
           setUploadState("success");
           setProcessingStep("Processing complete!");
 
-          // Refresh the PDF list and redirect after a short delay
           setTimeout(() => {
             loadPdfs();
-            router.push(`/dashboard/snaps/${response.payload.pdf.id}`);
+            router.push(`/dashboard/snaps/${result.payload.pdf.id}`);
+            resetModalState();
+          }, 2000);
+        } else if (result && result.payload) {
+          // Handle other success response formats
+          setUploadState("success");
+          setProcessingStep("Processing complete!");
 
-            // Reset modal state
-            setIsUploadModalOpen(false);
-            setSelectedFile(null);
-            setUploadState("idle");
-            setProcessingStep("");
-            setUploadProgress(0);
-            setCurrentProcessingStep(0);
-            setUploadedDocumentId(null);
+          setTimeout(() => {
+            loadPdfs();
+            resetModalState();
           }, 2000);
         }
       } catch (error: any) {
-        console.log("Upload failed:", error.message);
+        console.error("Upload error:", error);
+
         setUploadState("error");
+        setProcessingStep("");
+        setUploadProgress(0);
+
+        // Extract and set the specific error message
+        let errorMessage = "An unexpected error occurred during upload.";
+
+        if (typeof error === "string") {
+          errorMessage = error;
+        } else if (error && typeof error === "object") {
+          if (error.message) {
+            errorMessage = error.message;
+          } else if (error.payload) {
+            errorMessage = error.payload;
+          } else if (error.error) {
+            errorMessage = error.error;
+          }
+        }
+
+        // Set the specific error message for display
+        setUploadError(errorMessage);
       }
     }
   };
 
+  // Enhanced function to reset modal state completely
+  const resetModalState = () => {
+    setIsUploadModalOpen(false);
+    setSelectedFile(null);
+    setUploadState("idle");
+    setProcessingStep("");
+    setUploadProgress(0);
+    setCurrentProcessingStep(0);
+    setUploadedDocumentId(null);
+    setUploadError(null);
+    clearError(); // Clear Redux errors
+
+    // Reset file input
+    const fileInput = document.getElementById(
+      "file-upload"
+    ) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
   const closeModal = () => {
+    // Only allow closing when not in progress
     if (
       uploadState === "idle" ||
       uploadState === "error" ||
       uploadState === "success"
     ) {
-      clearError();
-      setIsUploadModalOpen(false);
-      setSelectedFile(null);
-      setUploadState("idle");
-      setProcessingStep("");
-      setUploadProgress(0);
-      setCurrentProcessingStep(0);
-      setUploadedDocumentId(null); // Reset this too
+      resetModalState();
     }
+  };
+
+  // Prevent closing modal during upload/processing
+  const canCloseModal =
+    uploadState === "idle" ||
+    uploadState === "error" ||
+    uploadState === "success";
+
+  const retryUpload = () => {
+    setUploadState("idle");
+    setUploadError(null);
+    setProcessingStep("");
+    setUploadProgress(0);
+    setCurrentProcessingStep(0);
+    clearError();
   };
 
   const getCurrentStepIndex = () => {
@@ -278,16 +362,30 @@ const Dashboard = () => {
 
   // Clear error when modal opens
   useEffect(() => {
-    if (isUploadModalOpen && error) {
+    if (isUploadModalOpen) {
       clearError();
+      setUploadError(null);
     }
-  }, [isUploadModalOpen, error, clearError]);
+  }, [isUploadModalOpen, clearError]);
+
+  // Helper function to determine if error is a tier limit error
+  const isTierLimitError = (errorMsg: string) => {
+    return (
+      errorMsg &&
+      (errorMsg.toLowerCase().includes("limit") ||
+        errorMsg.toLowerCase().includes("tier") ||
+        errorMsg.toLowerCase().includes("upgrade"))
+    );
+  };
 
   return (
     <div className="min-h-screen bg-white">
       {/* Backdrop blur overlay */}
       {isUploadModalOpen && (
-        <div className="fixed inset-0 z-40">
+        <div
+          className="fixed inset-0 z-40"
+          onClick={canCloseModal ? closeModal : undefined}
+        >
           <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
         </div>
       )}
@@ -303,14 +401,6 @@ const Dashboard = () => {
                   Manage and organize your digital boards
                 </p>
               </div>
-
-              {/* Action Buttons */}
-              {/* <div className="flex items-center gap-3">
-                <button className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-sm hover:shadow-md font-medium">
-                  <Plus className="w-4 h-4" />
-                  New board
-                </button>
-              </div> */}
             </div>
 
             {/* Quick Actions */}
@@ -406,20 +496,18 @@ const Dashboard = () => {
                   </h2>
                   <button
                     onClick={closeModal}
-                    className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-full"
+                    disabled={!canCloseModal}
+                    className={`transition-colors p-1 rounded-full ${
+                      canCloseModal
+                        ? "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                        : "text-gray-300 cursor-not-allowed"
+                    }`}
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 <div className="p-6">
-                  {/* Show errors in idle state */}
-                  {error && (
-                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                      <p className="text-red-700 text-sm">{error}</p>
-                    </div>
-                  )}
-
                   {/* File Input */}
                   <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -480,6 +568,35 @@ const Dashboard = () => {
                     </div>
                   </div>
 
+                  {/* Enhanced Error Message Display */}
+                  {(uploadError || error) && (
+                    <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-red-800 text-sm font-medium mb-1">
+                            Upload Failed
+                          </p>
+                          <p className="text-red-700 text-sm">
+                            {uploadError || error}
+                          </p>
+
+                          {/* Special handling for tier limit errors */}
+                          {isTierLimitError(uploadError || error || "") && (
+                            <div className="mt-3 pt-3 border-t border-red-200">
+                              <p className="text-red-600 text-xs mb-2">
+                                Upgrade your account to upload more PDFs
+                              </p>
+                              <button className="px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors">
+                                Upgrade Now
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Action Buttons */}
                   <div className="flex justify-end gap-3">
                     <button
@@ -502,124 +619,98 @@ const Dashboard = () => {
 
             {/* Processing States */}
             {(uploadState === "uploading" || uploadState === "processing") && (
-              <div className="p-8 text-center">
-                {uploadState === "uploading" ? (
-                  // Simple uploading state
-                  <>
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <Clock className="w-8 h-8 text-blue-600 animate-spin" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      Uploading PDF
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      Please wait while we upload your document...
-                    </p>
-
-                    {/* Simple progress animation */}
-                    <div className="w-full bg-gray-200 rounded-full h-2 mt-4">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full animate-pulse"
-                        style={{ width: "60%" }}
-                      ></div>
-                    </div>
-                  </>
-                ) : (
-                  // Enhanced smooth processing animation
-                  <>
-                    {/* Animated Icon Container */}
-                    <div
-                      className={`w-20 h-20 ${processingSteps[currentProcessingStep].bgColor} rounded-full flex items-center justify-center mx-auto mb-6 transition-all duration-500 transform`}
-                    >
-                      {React.createElement(
-                        processingSteps[currentProcessingStep].icon,
-                        {
-                          className: `w-10 h-10 ${processingSteps[currentProcessingStep].color} transition-all duration-500`,
-                        }
-                      )}
-                    </div>
-
-                    {/* Main Title */}
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      Processing Your PDF
-                    </h3>
-
-                    {/* Current Step Message */}
-                    <div className="min-h-[3rem] flex items-center justify-center mb-6">
-                      <p
-                        className={`text-sm font-medium transition-all duration-500 ${processingSteps[currentProcessingStep].color}`}
-                      >
-                        {processingSteps[currentProcessingStep].message}
-                      </p>
-                    </div>
-
-                    {/* Animated Progress Indicators */}
-                    <div className="flex justify-center gap-2 mb-6">
-                      {processingSteps.map((step, index) => (
-                        <div
-                          key={index}
-                          className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                            index === currentProcessingStep
-                              ? `${step.color.replace(
-                                  "text-",
-                                  "bg-"
-                                )} scale-125`
-                              : "bg-gray-300"
-                          }`}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Fun Processing Message */}
-                    <div className="bg-gray-50 rounded-lg p-4 relative overflow-hidden">
-                      <div className="flex items-center justify-center gap-2 text-gray-600 text-xs">
-                        <CheckCircle className="w-4 h-4 animate-pulse" />
-                        <span>Creating study materials just for you...</span>
-                        <CheckCircle className="w-4 h-4 animate-pulse" />
-                      </div>
-
-                      {/* Floating particles animation */}
-                      <div className="absolute inset-0 pointer-events-none">
-                        {[...Array(6)].map((_, i) => (
-                          <div
-                            key={i}
-                            className={`absolute w-1 h-1 ${processingSteps[
-                              currentProcessingStep
-                            ].color.replace(
-                              "text-",
-                              "bg-"
-                            )} rounded-full animate-bounce`}
-                            style={{
-                              left: `${20 + i * 12}%`,
-                              top: `${30 + (i % 3) * 10}%`,
-                              animationDelay: `${i * 0.2}s`,
-                              animationDuration: "2s",
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {/* Error Display in processing states */}
-                {error && (
-                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-700 text-sm">{error}</p>
-                    <button
-                      onClick={() => {
-                        clearError();
-                        setUploadState("idle");
-                        setProcessingStep("");
-                        setUploadProgress(0);
-                        setCurrentProcessingStep(0);
-                      }}
-                      className="mt-2 text-xs text-red-600 hover:text-red-800 font-medium"
-                    >
-                      Try again
-                    </button>
+              <div className="p-8">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Clock className="w-8 h-8 text-blue-600 animate-spin" />
                   </div>
-                )}
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Processing Your PDF
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    We're analyzing your document and creating study materials
+                  </p>
+
+                  {/* Progress Bar */}
+                  <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-500">
+                    {uploadProgress}% complete
+                  </p>
+                </div>
+
+                {/* Current Processing Step */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-blue-900 font-medium">
+                      {processingStep}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Processing Steps Overview */}
+                <div className="space-y-2">
+                  {processingSteps.map((step, index) => {
+                    const currentIndex = getCurrentStepIndex();
+                    const isActive = index === currentIndex;
+                    const isCompleted = index < currentIndex;
+                    const StepIcon = step.icon;
+
+                    return (
+                      <div
+                        key={index}
+                        className={`flex items-center gap-3 p-2 rounded-lg transition-all ${
+                          isActive
+                            ? "bg-blue-50 border border-blue-200"
+                            : isCompleted
+                            ? "bg-green-50 border border-green-200"
+                            : "bg-gray-50 border border-gray-200"
+                        }`}
+                      >
+                        <div
+                          className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                            isActive
+                              ? "bg-blue-200"
+                              : isCompleted
+                              ? "bg-green-200"
+                              : "bg-gray-200"
+                          }`}
+                        >
+                          <StepIcon
+                            className={`w-3 h-3 ${
+                              isActive
+                                ? "text-blue-600"
+                                : isCompleted
+                                ? "text-green-600"
+                                : "text-gray-400"
+                            }`}
+                          />
+                        </div>
+                        <span
+                          className={`text-xs font-medium ${
+                            isActive
+                              ? "text-blue-900"
+                              : isCompleted
+                              ? "text-green-900"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {step.step}
+                        </span>
+                        {isCompleted && (
+                          <div className="ml-auto">
+                            <CheckCircle className="w-3 h-3 text-green-600" />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
 
@@ -653,52 +744,75 @@ const Dashboard = () => {
               </div>
             )}
 
-            {/* Error State */}
+            {/* Enhanced Error State */}
             {uploadState === "error" && (
-              <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <X className="w-8 h-8 text-red-600" />
+              <div className="p-8">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <AlertCircle className="w-8 h-8 text-red-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Upload Failed
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    There was an error processing your PDF. Please try again.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Upload Failed
-                </h3>
-                <p className="text-gray-600 text-sm mb-6">
-                  {error ||
-                    "You've reached your free tier limit. Upgrade to upload more PDFs."}
-                </p>
+
+                {/* Enhanced Error Message Display */}
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-red-800 text-sm font-medium mb-1">
+                        Error Details
+                      </p>
+                      <p className="text-red-700 text-sm">
+                        {uploadError || error || "Upload failed"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Special handling for subscription limit errors */}
-                {error && error.includes("limit") ? (
+                {isTierLimitError(uploadError || error || "") && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                    <p className="text-yellow-800 text-sm">
-                      You've reached your free tier limit. Upgrade to upload
-                      more PDFs.
-                    </p>
-                    <button className="mt-3 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-                      Upgrade Account
-                    </button>
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="text-yellow-800 text-sm font-medium mb-1">
+                          Upgrade Required
+                        </p>
+                        <p className="text-yellow-700 text-sm mb-3">
+                          You've reached your free tier limit. Upgrade to upload
+                          more PDFs and unlock additional features.
+                        </p>
+                        <button
+                          onClick={() => router.push("/pricing")}
+                          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          Upgrade Account
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                ) : (
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-3">
                   <button
-                    onClick={() => {
-                      clearError();
-                      setUploadState("idle");
-                      setProcessingStep("");
-                      setUploadProgress(0);
-                      setCurrentProcessingStep(0);
-                    }}
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                    onClick={closeModal}
+                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={retryUpload}
+                    className="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
                   >
                     Try Again
                   </button>
-                )}
-
-                <button
-                  onClick={closeModal}
-                  className="mt-4 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors block w-full"
-                >
-                  Close
-                </button>
+                </div>
               </div>
             )}
           </div>
