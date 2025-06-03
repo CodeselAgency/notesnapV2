@@ -13,13 +13,17 @@ import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
 import BentoGrid from "@/components/Home/BentoGrid";
 import { useAuth } from "@/hooks/useAuth";
 import { redirect } from "next/navigation";
-
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 export default function Home() {
   const { user } = useAuth();
+  const router = useRouter();
 
-  if (user) {
-    redirect("/dashboard");
-  }
+  useEffect(() => {
+    if (user) {
+      redirect("/dashboard");
+    }
+  }, [user, router]);
 
   return (
     <div
