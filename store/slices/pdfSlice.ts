@@ -22,6 +22,8 @@ interface UploadProgress {
     fileId: string
     progress: number
     status: 'uploading' | 'processing' | 'completed' | 'error'
+    documentId?: string
+    error?: string
 }
 
 interface PdfState {
@@ -168,66 +170,88 @@ export const fetchPdfById = createAsyncThunk(
 
 // Upload PDF with board ID
 export const uploadPdf = createAsyncThunk(
-    'pdf/uploadPdf',
+    "pdf/uploadPdf",
     async (
         { file, boardId, onProgress }: { file: File; boardId?: string; onProgress?: (progress: number) => void },
-        { dispatch, rejectWithValue }
+        { dispatch, rejectWithValue },
     ) => {
         try {
             // Validate file
-            if (!file.type.includes('pdf')) {
-                return rejectWithValue('Only PDF files are allowed')
+            if (!file.type.includes("pdf")) {
+                return rejectWithValue("Only PDF files are allowed")
             }
 
-            if (file.size > 10 * 1024 * 1024) { // 10MB limit
-                return rejectWithValue('File size must be less than 10MB')
+            if (file.size > 10 * 1024 * 1024) {
+                // 10MB limit
+                return rejectWithValue("File size must be less than 10MB")
             }
 
             const fileId = `${Date.now()}-${file.name}`
 
             // Add upload progress tracking
-            dispatch(addUploadProgress({
-                fileId,
-                progress: 0,
-                status: 'uploading'
-            }))
+            dispatch(
+                addUploadProgress({
+                    fileId,
+                    progress: 0,
+                    status: "uploading",
+                }),
+            )
 
             const formData = new FormData()
-            formData.append('file', file)
-            formData.append('fileId', fileId)
+            formData.append("file", file)
+            formData.append("fileId", fileId)
             if (boardId) {
-                formData.append('boardId', boardId)
+                formData.append("boardId", boardId)
             }
 
-            const response = await fetch('/api/pdfs/upload', {
-                method: 'POST',
+            const response = await fetch("/api/pdfs/upload", {
+                method: "POST",
                 body: formData,
             })
 
             if (!response.ok) {
-                let errorMessage = 'You have reached your limit of PDFs for your tier. Please upgrade to a higher tier to upload more PDFs.';
+                let errorMessage = "Upload failed. Please try again."
+
                 try {
-                    const error = await response.json()
-                    errorMessage = error.message || errorMessage;
+                    const errorData = await response.json()
+                    errorMessage = errorData.message || errorData.error || errorMessage
                 } catch {
-                    errorMessage = response.statusText || errorMessage;
+                    // If response is not JSON, use status-based messages
+                    if (response.status === 413) {
+                        errorMessage = "File size exceeds the limit. Please try a smaller PDF."
+                    } else if (response.status === 429) {
+                        errorMessage =
+                            "You have reached your limit of PDFs for your tier. Please upgrade to a higher tier to upload more PDFs."
+                    } else if (response.status === 400) {
+                        errorMessage = "Invalid file format. Please upload a valid PDF file."
+                    } else if (response.status >= 500) {
+                        errorMessage = "Server error occurred. Please try again later."
+                    } else {
+                        errorMessage = response.statusText || errorMessage
+                    }
                 }
-                dispatch(updateUploadProgress({
-                    fileId,
-                    progress: 0,
-                    status: 'error'
-                }))
+
+                dispatch(
+                    updateUploadProgress({
+                        fileId,
+                        progress: 0,
+                        status: "error",
+                    }),
+                )
+
                 return rejectWithValue(errorMessage)
             }
 
             const data = await response.json()
 
             // Update progress to completed
-            dispatch(updateUploadProgress({
-                fileId,
-                progress: 100,
-                status: 'completed'
-            }))
+            dispatch(
+                updateUploadProgress({
+                    fileId,
+                    progress: 100,
+                    status: "completed",
+                }),
+            )
 
             // Remove upload progress after 2 seconds
             setTimeout(() => {
@@ -237,10 +261,24 @@ export const uploadPdf = createAsyncThunk(
             // Handle different response structures for uploaded file
             return data.file || data
         } catch (error) {
-            console.error('Upload error:', error)
-            return rejectWithValue('Network error occurred')
+            console.error("Upload error:", error)
+
+            // Handle network errors and other exceptions
+            let errorMessage = "Network error occurred. Please check your connection and try again."
+
+            if (error instanceof Error) {
+                if (error.message.includes("Failed to fetch")) {
+                    errorMessage = "Network error. Please check your internet connection."
+                } else if (error.message.includes("timeout")) {
+                    errorMessage = "Upload timeout. Please try again with a smaller file."
+                } else {
+                    errorMessage = error.message
+                }
+            }
+
+            return rejectWithValue(errorMessage)
         }
-    }
+    },
 )
 
 const pdfSlice = createSlice({

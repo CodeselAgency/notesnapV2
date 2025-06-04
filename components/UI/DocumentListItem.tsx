@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   FileText,
-  Image,
   Video,
   Music,
   Archive,
@@ -18,6 +17,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface DocumentItem {
   id: string;
@@ -133,8 +133,8 @@ const DocumentListItem = ({ document }: { document: DocumentItem }) => {
       <Link href={`/dashboard/snaps/${document.id}`}>
         <div className="p-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-black flex-shrink-0">
-              <BookOpen className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center text-black flex-shrink-0">
+              <Image src='/images/pdf-icon.png' alt="File Icon" width={24} height={24} />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -162,7 +162,7 @@ const DocumentListItem = ({ document }: { document: DocumentItem }) => {
                   </span>
                   {document.page_count > 0 && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                      {document.page_count} pages
+                      {document.page_count} {document.page_count === 1 ? "page" : "pages"}
                     </span>
                   )}
                   <span className="inline-flex items-center gap-1 text-xs text-gray-500">
