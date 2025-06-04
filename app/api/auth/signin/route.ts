@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/serverSupabase'
 
 export async function POST(request: NextRequest) {
+
+    const URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api/auth/callback' : 'https://notesnap.app/api/auth/callback'
     try {
         const { provider } = await request.json()
 
@@ -17,7 +19,7 @@ export async function POST(request: NextRequest) {
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `http://localhost:3000/api/auth/callback`,
+                redirectTo: `${URL}`,
             },
         })
 

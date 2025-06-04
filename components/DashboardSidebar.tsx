@@ -80,177 +80,92 @@ function SettingsModal({
   const messageProgress = maxMessages ? (usedMessages / maxMessages) * 100 : 0;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[80] animate-in fade-in duration-200 p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-[80] p-4">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in duration-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-black/5">
-          <h2 className="text-xl font-bold text-black">Settings</h2>
+        <div className="px-6 pt-6 pb-4 flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-black">My Profile</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-black/5 rounded-lg transition-all duration-200 hover:rotate-90"
+            className="p-2 text-gray-400 hover:text-gray-600 rounded-full transition-colors"
           >
-            <X className="w-5 h-5 text-black/60" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6 max-h-[calc(100vh-16rem)] overflow-y-auto">
-          {/* User Info Section */}
+        <div className="px-6 pb-6 space-y-6">
+          {/* Profile Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-black">
-              Account Information
-            </h3>
-
-            {/* Name */}
-            <div
-              className="bg-black/5 rounded-lg p-4 hover:bg-black/10 transition-all duration-200 animate-in slide-in-from-left-2"
-              style={{ animationDelay: "100ms" }}
-            >
-              <div className="flex items-center space-x-3 ">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-black/60">Name</p>
-                  <p className="text-base font-medium text-black">{userName}</p>
-                </div>
+            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-300 via-blue-500 to-blue-400 rounded-xl flex items-center justify-center">
+                <User className="w-6 h-6 text-white" />
               </div>
-            </div>
-
-            {/* Email */}
-            <div
-              className="bg-black/5 rounded-lg p-4 hover:bg-black/10 transition-all duration-200 animate-in slide-in-from-left-2"
-              style={{ animationDelay: "200ms" }}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-black/60">Email</p>
-                  <p className="text-base font-medium text-black">
-                    {userEmail}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Subscription Tier */}
-            <div
-              className="bg-black/5 rounded-lg p-4 hover:bg-black/10 transition-all duration-200 animate-in slide-in-from-left-2"
-              style={{ animationDelay: "300ms" }}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Crown className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-black/60">
-                    Subscription
-                  </p>
-                  <p className="text-base font-medium text-black capitalize">
-                    {currentPlan} Plan
-                  </p>
-                </div>
+              <div>
+                <h3 className="font-medium text-black">{userName}</h3>
+                <p className="text-sm text-gray-500">{userEmail}</p>
               </div>
             </div>
           </div>
 
-          {/* Usage Statistics */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-black">Usage Statistics</h3>
+          {/* Plan Section */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
+              <div className="flex items-center gap-3">
+                <p className="text-sm text-blue-600 font-medium">
+                  Active Plan : 
+                </p>
+                
+              </div>
+                <div className="flex items-center gap-3">
+                <p className="text-sm text-blue-600 font-medium">{currentPlan.toUpperCase()} Plan</p>
+              <Link href="/pricing" className="text-xs font-medium text-white px-3 py-2 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-500 rounded-lg flex items-center gap-2 ">
+                
+                  <Crown className="w-4 h-4 text-white" />
+                  Upgrade
+              </Link>
+              </div>
+            </div>
+          </div>
 
+          {/* Usage Section */}
+          <div className="space-y-3">
             {/* PDFs Usage */}
-            <div
-              className="bg-black/5 rounded-lg p-4 hover:bg-black/10 transition-all duration-200 animate-in slide-in-from-right-2"
-              style={{ animationDelay: "400ms" }}
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
-                      <FileCode className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-black/60">
-                        PDFs Used
-                      </p>
-                      <p className="text-base font-medium text-black">
-                        {usedPdfs} / {maxPdfs}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-black">
-                      {pdfProgress.toFixed(0)}%
-                    </p>
-                  </div>
-                </div>
-                <div className="w-full bg-black/10 rounded-full h-1">
-                  <div
-                    className="bg-black h-1 rounded-full transition-all duration-700 ease-out"
-                    style={{
-                      width: `${pdfProgress}%`,
-                      animationDelay: "600ms",
-                    }}
-                  ></div>
-                </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">PDFs Used</span>
+                <span className="font-medium">{usedPdfs} / {maxPdfs}</span>
+              </div>
+              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-black rounded-full transition-all duration-500"
+                  style={{ width: `${pdfProgress}%` }}
+                />
               </div>
             </div>
 
             {/* Messages Usage */}
-            <div
-              className="bg-black/5 rounded-lg p-4 hover:bg-black/10 transition-all duration-200 animate-in slide-in-from-right-2"
-              style={{ animationDelay: "500ms" }}
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
-                      <Bot className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-black/60">
-                        Messages Used
-                      </p>
-                      <p className="text-base font-medium text-black">
-                        {usedMessages} / {maxMessages}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-black">
-                      {messageProgress.toFixed(0)}%
-                    </p>
-                  </div>
-                </div>
-                <div className="w-full bg-black/10 rounded-full h-1">
-                  <div
-                    className="bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 h-1 rounded-full transition-all duration-700 ease-out"
-                    style={{
-                      width: `${messageProgress}%`,
-                      animationDelay: "700ms",
-                    }}
-                  ></div>
-                </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Messages Used</span>
+                <span className="font-medium">{usedMessages} / {maxMessages}</span>
+              </div>
+              <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-black rounded-full transition-all duration-500"
+                  style={{ width: `${messageProgress}%` }}
+                />
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div
-          className="border-t border-black/5 p-6 animate-in slide-in-from-bottom-2"
-          style={{ animationDelay: "600ms" }}
-        >
+          {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-gradient-to-r from-zinc-800/60 via-zinc-800 to-zinc-800  rounded-lg transition-all duration-200 group cursor-pointer"
+            className="w-full mt-6 px-4 py-3 flex items-center justify-center gap-2 text-sm font-medium text-white bg-black rounded-xl cursor-pointer hover:bg-gray-900 transition-colors"
           >
-            <span className="text-sm font-semibold text-white tracking-wider">
-              Logout
-            </span>
-            <LogOut className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform duration-200" />
+            <span>Log Out</span>
+            <LogOut className="w-4 h-4" />
           </button>
         </div>
       </div>

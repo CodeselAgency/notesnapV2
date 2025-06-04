@@ -13,7 +13,7 @@ const Mockup = () => {
     >
       <div className="p-2 bg-gradient-to-b from-blue-500/60 via-blue-500 to-blue-500 rounded-lg shadow-2xl shadow-blue-500/30">
         <Image
-          src="/images/notesnap-mockup2.png"
+          src="/images/mockup-image.png"
           alt="mockup image"
           width={1000}
           height={700}

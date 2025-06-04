@@ -7,11 +7,6 @@ import {
   Bot,
   User,
   Copy,
-  ThumbsUp,
-  ThumbsDown,
-  Paperclip,
-  Mic,
-  MicOff,
   Sparkles,
   Brain,
 } from "lucide-react";
@@ -24,7 +19,7 @@ import {
   addUserMessage,
 } from "@/store/slices/chatSlice";
 import type { PdfData } from "@/constants/index";
-import Image from "next/image";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 interface ChatTabProps {
   pdf: PdfData | null;
@@ -37,7 +32,6 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
   );
 
   const [inputMessage, setInputMessage] = useState("");
-  const [isRecording, setIsRecording] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -75,11 +69,11 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
 
     // Create temporary user message to show immediately
     const tempUserMessage = {
-      id: `temp-${Date.now()}`, // Temporary ID
+      id: `temp-${Date.now()}`,
       message_content: messageContent,
       message_type: "user" as const,
       message_order: messages.length + 1,
-      timestamp: new Date().toISOString(), // Convert to ISO string
+      timestamp: new Date(),
       pdfId: pdf.id,
     };
 
@@ -116,11 +110,6 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
     }
   };
 
-  const toggleRecording = () => {
-    setIsRecording(!isRecording);
-    // Add voice recording logic here
-  };
-
   const suggestedQuestions = pdf
     ? [
         {
@@ -149,10 +138,15 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-white">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-600">Loading messages...</p>
+      <div className="flex items-center justify-center w-full min-h-screen bg-white/50 fixed inset-0  z-50">
+        <div className="text-center flex items-center justify-center">
+          <DotLottieReact
+            src='/animations/message-loading.json'
+            loop={true}
+            autoplay={true}
+            style={{ width: "120px", height: "120px" }}
+          />
+          <p className="text-slate-600 font-medium mt-4">Loading messages...</p>
         </div>
       </div>
     );
@@ -222,6 +216,7 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
                       : "justify-start"
                   }`}
                 >
+                  
                   {message.message_type === "ai" && (
                     <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
                       <Bot className="w-4 h-4 text-white" />
@@ -231,15 +226,15 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
                   <div
                     className={`max-w-2xl ${
                       message.message_type === "user"
-                        ? "bg-black text-white rounded-xl rounded-br-sm"
-                        : "bg-white border-2 border-black/5 rounded-xl rounded-bl-sm"
-                    } px-4 py-3`}
+                        ? "bg-[#1A1A1A] text-white  rounded-xl rounded-br-sm"
+                        : "bg-white/80 border-2 border-black/5 rounded-xl rounded-bl-sm"
+                    } px-4 py-3 tracking-wide`}
                   >
                     <p
                       className={`leading-relaxed whitespace-pre-wrap text-[15px] ${
                         message.message_type === "user"
-                          ? "text-white"
-                          : "text-black"
+                          ? "text-white font-medium"
+                          : "text-gray-800"
                       }`}
                     >
                       {message.message_content}
