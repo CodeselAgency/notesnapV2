@@ -159,190 +159,176 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-white">
       {/* Error Display */}
       {error && (
-        <div className="mx-6 mt-4 p-4 bg-black/5 border-2 border-black/10 rounded-lg text-black">
-          <p className="text-sm">Error: {error}</p>
+        <div className="max-w-3xl mx-auto w-full px-4 sm:px-6">
+          <div className="mt-4 p-4 bg-black/5 border-2 border-black/10 rounded-lg text-black">
+            <p className="text-sm">Error: {error}</p>
+          </div>
         </div>
       )}
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-6 py-6">
-        {sortedMessages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full min-h-[600px]">
-            <div className="relative mb-8">
-              <div className="w-16 h-16 bg-black rounded-xl flex items-center justify-center shadow-xl">
-                <Brain className="w-8 h-8 text-white" />
+      {/* Messages Area - Scrollable Container */}
+      <div className="flex-1 overflow-y-auto mb-[80px]">
+        <div className="max-w-3xl mx-auto w-full px-4 sm:px-6 py-4 sm:py-6">
+          {sortedMessages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center min-h-[400px]">
+              <div className="relative mb-8">
+                <div className="w-16 h-16 bg-black rounded-xl flex items-center justify-center shadow-xl">
+                  <Brain className="w-8 h-8 text-white" />
+                </div>
+                <div className="absolute -top-2 -right-2">
+                  <Sparkles className="w-5 h-5 text-yellow-500" />
+                </div>
               </div>
-              <div className="absolute -top-2 -right-2">
-                <Sparkles className="w-5 h-5 text-yellow-500" />
+
+              <div className="text-center max-w-lg mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  Hi! I&apos;m your AI assistant
+                </h2>
+                <p className="text-gray-600 text-base leading-relaxed">
+                  Ask me anything about your PDF document &quot;
+                  {pdf?.file_name}&quot;. I&apos;m here to help you understand
+                  and explore the content.
+                </p>
               </div>
-            </div>
 
-            <div className="text-center max-w-lg mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                Hi! I'm your AI assistant
-              </h2>
-              <p className="text-gray-600 text-base leading-relaxed">
-                Ask me anything about your PDF document "{pdf?.file_name}". I'm
-                here to help you understand and explore the content.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-2xl">
-              {suggestedQuestions.map((item, index) => (
-                <button
-                  key={index}
-                  onClick={() => setInputMessage(item.question)}
-                  className="p-4 bg-white hover:bg-black/5 rounded-lg border-2 border-black/5 text-left transition-all duration-200 hover:border-black/10 group"
-                >
-                  <div className="font-semibold text-black mb-1 group-hover:text-black">
-                    {item.title}
-                  </div>
-                  <div className="text-black/60 text-sm leading-relaxed">
-                    {item.question}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-4 max-w-4xl mx-auto">
-            {sortedMessages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-3 ${
-                  message.message_type === "user"
-                    ? "justify-end"
-                    : "justify-start"
-                }`}
-              >
-                {message.message_type === "ai" && (
-                  <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <Bot className="w-4 h-4 text-white" />
-                  </div>
-                )}
-
-                <div
-                  className={`max-w-2xl ${
-                    message.message_type === "user"
-                      ? "bg-black text-white rounded-xl rounded-br-sm"
-                      : "bg-white border-2 border-black/5 rounded-xl rounded-bl-sm"
-                  } px-4 py-3`}
-                >
-                  <p
-                    className={`leading-relaxed whitespace-pre-wrap text-[15px] ${
-                      message.message_type === "user"
-                        ? "text-white"
-                        : "text-black"
-                    }`}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-2xl">
+                {suggestedQuestions.map((item, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setInputMessage(item.question)}
+                    className="p-4 bg-white hover:bg-black/5 rounded-lg border-2 border-black/5 text-left transition-all duration-200 hover:border-black/10 group"
                   >
-                    {message.message_content}
-                  </p>
-
+                    <div className="font-semibold text-black mb-1 group-hover:text-black">
+                      {item.title}
+                    </div>
+                    <div className="text-black/60 text-sm leading-relaxed">
+                      {item.question}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {sortedMessages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex gap-3 ${
+                    message.message_type === "user"
+                      ? "justify-end"
+                      : "justify-start"
+                  }`}
+                >
                   {message.message_type === "ai" && (
-                    <div className="flex items-center gap-2 mt-3 pt-2 border-t border-black/5">
-                      <button
-                        onClick={() => copyMessage(message.message_content)}
-                        className="p-1.5 hover:bg-black/5 rounded-lg transition-colors"
-                        title="Copy message"
-                      >
-                        <Copy className="w-4 h-4 text-black/60" />
-                      </button>
-                      <span className="text-xs text-black/40 ml-auto">
-                        {new Date(message.timestamp).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
+                    <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <Bot className="w-4 h-4 text-white" />
+                    </div>
+                  )}
+
+                  <div
+                    className={`max-w-2xl ${
+                      message.message_type === "user"
+                        ? "bg-black text-white rounded-xl rounded-br-sm"
+                        : "bg-white border-2 border-black/5 rounded-xl rounded-bl-sm"
+                    } px-4 py-3`}
+                  >
+                    <p
+                      className={`leading-relaxed whitespace-pre-wrap text-[15px] ${
+                        message.message_type === "user"
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                    >
+                      {message.message_content}
+                    </p>
+
+                    {message.message_type === "ai" && (
+                      <div className="flex items-center gap-2 mt-3 pt-2 border-t border-black/5">
+                        <button
+                          onClick={() => copyMessage(message.message_content)}
+                          className="p-1.5 hover:bg-black/5 rounded-lg transition-colors"
+                          title="Copy message"
+                        >
+                          <Copy className="w-4 h-4 text-black/60" />
+                        </button>
+                        <span className="text-xs text-black/40 ml-auto">
+                          {new Date(message.timestamp).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {message.message_type === "user" && (
+                    <div className="w-8 h-8 bg-black/80 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <User className="w-4 h-4 text-white" />
                     </div>
                   )}
                 </div>
+              ))}
 
-                {message.message_type === "user" && (
-                  <div className="w-8 h-8 bg-black/80 rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
-                    <User className="w-4 h-4 text-white" />
+              {isTyping && (
+                <div className="flex gap-3 justify-start">
+                  <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <Bot className="w-4 h-4 text-white" />
                   </div>
-                )}
-              </div>
-            ))}
-
-            {isTyping && (
-              <div className="flex gap-3 justify-start">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
-                  <Bot className="w-4 h-4 text-white" />
-                </div>
-                <div className="bg-white border-2 border-black/5 rounded-xl rounded-bl-sm px-4 py-3">
-                  <div className="flex space-x-1">
-                    <div className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"></div>
-                    <div
-                      className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.1s" }}
-                    ></div>
-                    <div
-                      className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"
-                      style={{ animationDelay: "0.2s" }}
-                    ></div>
+                  <div className="bg-white border-2 border-black/5 rounded-xl rounded-bl-sm px-4 py-3">
+                    <div className="flex space-x-1">
+                      <div className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"></div>
+                      <div
+                        className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.1s" }}
+                      ></div>
+                      <div
+                        className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"
+                        style={{ animationDelay: "0.2s" }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-        <div ref={messagesEndRef} />
+              )}
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
-      {/* Input Area */}
-      <div className="border-t border-black/5 bg-white px-6 py-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-3">
-            {/* <button
-              className="p-2.5 hover:bg-black/5 rounded-lg transition-colors border-2 border-black/5"
-              title="Attach file"
-            >
-              <Paperclip className="w-4 h-4 text-black/60" />
-            </button> */}
+      {/* Input Area - Fixed */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-black/5">
+        <div className="lg:ml-[20%] xl:ml-[20%] 2xl:ml-[20%]">
+          <div className="max-w-3xl mx-auto w-full">
+            <div className="px-4 sm:px-6 py-4">
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder={`Ask me anything about ${
+                      pdf?.file_name || "this PDF"
+                    }...`}
+                    disabled={isTyping || isLoading}
+                    className="w-full px-4 py-3 border-2 border-black/10 rounded-xl focus:outline-none focus:border-black/20 disabled:opacity-50 disabled:bg-black/5 text-black placeholder-black/40 text-sm transition-colors duration-200 shadow-sm"
+                  />
+                </div>
 
-            <div className="flex-1">
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder={`Ask me anything about ${
-                  pdf?.file_name || "this PDF"
-                }...`}
-                disabled={isTyping || isLoading}
-                className="w-full px-4 py-2.5 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-black/10 disabled:opacity-50 disabled:bg-black/5 text-black placeholder-black/40 text-sm"
-              />
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!inputMessage.trim() || isTyping || isLoading}
+                  className="p-3 bg-black hover:bg-black/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl transition-all duration-200 shadow-md disabled:shadow-sm flex-shrink-0"
+                  title="Send message"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
             </div>
-            {/* 
-            <button
-              onClick={toggleRecording}
-              className={`p-2.5 rounded-lg transition-colors border-2 ${
-                isRecording
-                  ? "bg-black text-white border-black hover:bg-black/90"
-                  : "text-black/60 hover:bg-black/5 border-black/5"
-              }`}
-              title={isRecording ? "Stop recording" : "Start voice recording"}
-            >
-              {isRecording ? (
-                <MicOff className="w-4 h-4" />
-              ) : (
-                <Mic className="w-4 h-4" />
-              )}
-            </button> */}
-
-            <button
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isTyping || isLoading}
-              className="p-2.5 bg-black hover:bg-black/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200 shadow-lg disabled:shadow-sm"
-              title="Send message"
-            >
-              <Send className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>

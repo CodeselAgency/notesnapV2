@@ -30,7 +30,7 @@ export default function UseCasesLayout({
     <section className="flex flex-col min-h-screen bg-white font-sans">
       {/* <Navbar /> */}
       <SmoothScrollProvider>
-        <ResizableNavbar />
+        <Navbar />
         <NavbarPlaceholder />
         {children}
         <Footer />

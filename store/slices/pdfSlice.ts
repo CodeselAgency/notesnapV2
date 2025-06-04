@@ -22,6 +22,8 @@ interface UploadProgress {
     fileId: string
     progress: number
     status: 'uploading' | 'processing' | 'completed' | 'error'
+    documentId?: string
+    error?: string
 }
 
 interface PdfState {

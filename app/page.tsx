@@ -12,9 +12,11 @@ import HowItWorks from "@/components/Home/HowitWorks";
 import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
 import BentoGrid from "@/components/Home/BentoGrid";
 import { useAuth } from "@/hooks/useAuth";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
+import Navbar from "@/components/Home/Navbar";
+
 export default function Home() {
   const { user } = useAuth();
   const router = useRouter();
@@ -90,26 +92,25 @@ export default function Home() {
         }}
       />
 
-      {/* <SmoothScrollProvider> */}
+      <SmoothScrollProvider>
+        <div className="relative z-10">
+          {/* Header/Navigation */}
 
-      <div className="relative z-10">
-        {/* Header/Navigation */}
+          <Navbar />
+          {/* <Navbar /> */}
+          <Hero />
 
-        {/* <Navbar /> */}
-        <ResizableNavbar />
-        <Hero />
+          <MockUp />
 
-        <MockUp />
-
-        <Trust />
-        <BentoGrid />
-        {/* <HowItWorks /> */}
-        <Process />
-        <Testimonals />
-        <Faq />
-        <Footer />
-      </div>
-      {/* </SmoothScrollProvider> */}
+          <Trust />
+          <BentoGrid />
+          {/* <HowItWorks /> */}
+          <Process />
+          <Testimonals />
+          <Faq />
+          <Footer />
+        </div>
+      </SmoothScrollProvider>
     </div>
   );
 }

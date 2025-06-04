@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   Plus,
   Settings,
@@ -11,7 +12,6 @@ import {
   Zap,
   Bot,
   FileCode,
-  Layout,
   X,
   LogOut,
   Mail,
@@ -32,6 +32,13 @@ interface DashboardSidebarProps {
   maxPdfs?: number;
   usedMessages?: number;
   maxMessages?: number;
+}
+
+interface Board {
+  id: string;
+  name: string;
+  description?: string;
+  color?: string;
 }
 
 // Settings Modal Component
@@ -73,8 +80,8 @@ function SettingsModal({
   const messageProgress = maxMessages ? (usedMessages / maxMessages) * 100 : 0;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-in fade-in duration-200">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[80] animate-in fade-in duration-200 p-4">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-black/5">
           <h2 className="text-xl font-bold text-black">Settings</h2>
@@ -87,10 +94,10 @@ function SettingsModal({
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6 max-h-96 overflow-y-auto">
+        <div className="p-6 space-y-6 max-h-[calc(100vh-16rem)] overflow-y-auto">
           {/* User Info Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-black">
+            <h3 className="text-lg font-medium text-black">
               Account Information
             </h3>
 
@@ -99,15 +106,13 @@ function SettingsModal({
               className="bg-black/5 rounded-lg p-4 hover:bg-black/10 transition-all duration-200 animate-in slide-in-from-left-2"
               style={{ animationDelay: "100ms" }}
             >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+              <div className="flex items-center space-x-3 ">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-black/60">Name</p>
-                  <p className="text-base font-semibold text-black">
-                    {userName}
-                  </p>
+                  <p className="text-base font-medium text-black">{userName}</p>
                 </div>
               </div>
             </div>
@@ -118,12 +123,12 @@ function SettingsModal({
               style={{ animationDelay: "200ms" }}
             >
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
                   <Mail className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-black/60">Email</p>
-                  <p className="text-base font-semibold text-black">
+                  <p className="text-base font-medium text-black">
                     {userEmail}
                   </p>
                 </div>
@@ -136,14 +141,14 @@ function SettingsModal({
               style={{ animationDelay: "300ms" }}
             >
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
                   <Crown className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-black/60">
                     Subscription
                   </p>
-                  <p className="text-base font-semibold text-black capitalize">
+                  <p className="text-base font-medium text-black capitalize">
                     {currentPlan} Plan
                   </p>
                 </div>
@@ -153,9 +158,7 @@ function SettingsModal({
 
           {/* Usage Statistics */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-black">
-              Usage Statistics
-            </h3>
+            <h3 className="text-lg font-medium text-black">Usage Statistics</h3>
 
             {/* PDFs Usage */}
             <div
@@ -165,27 +168,27 @@ function SettingsModal({
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
                       <FileCode className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-black/60">
                         PDFs Used
                       </p>
-                      <p className="text-base font-semibold text-black">
+                      <p className="text-base font-medium text-black">
                         {usedPdfs} / {maxPdfs}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-black">
+                    <p className="text-sm font-medium text-black">
                       {pdfProgress.toFixed(0)}%
                     </p>
                   </div>
                 </div>
-                <div className="w-full bg-black/10 rounded-full h-2">
+                <div className="w-full bg-black/10 rounded-full h-1">
                   <div
-                    className="bg-black h-2 rounded-full transition-all duration-700 ease-out"
+                    className="bg-black h-1 rounded-full transition-all duration-700 ease-out"
                     style={{
                       width: `${pdfProgress}%`,
                       animationDelay: "600ms",
@@ -203,27 +206,27 @@ function SettingsModal({
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gray-500 rounded-lg flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center">
                       <Bot className="w-5 h-5 text-white" />
                     </div>
                     <div>
                       <p className="text-sm font-medium text-black/60">
                         Messages Used
                       </p>
-                      <p className="text-base font-semibold text-black">
+                      <p className="text-base font-medium text-black">
                         {usedMessages} / {maxMessages}
                       </p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-black">
+                    <p className="text-sm font-medium text-black">
                       {messageProgress.toFixed(0)}%
                     </p>
                   </div>
                 </div>
-                <div className="w-full bg-black/10 rounded-full h-2">
+                <div className="w-full bg-black/10 rounded-full h-1">
                   <div
-                    className="bg-gray-800 h-2 rounded-full transition-all duration-700 ease-out"
+                    className="bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 h-1 rounded-full transition-all duration-700 ease-out"
                     style={{
                       width: `${messageProgress}%`,
                       animationDelay: "700ms",
@@ -242,15 +245,27 @@ function SettingsModal({
         >
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-black hover:bg-gray-800 rounded-lg transition-all duration-200 group"
+            className="w-full flex items-center justify-center space-x-2 py-3 px-4 bg-gradient-to-r from-zinc-800/60 via-zinc-800 to-zinc-800  rounded-lg transition-all duration-200 group cursor-pointer"
           >
+            <span className="text-sm font-semibold text-white tracking-wider">
+              Logout
+            </span>
             <LogOut className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform duration-200" />
-            <span className="text-sm font-semibold text-white">Logout</span>
           </button>
         </div>
       </div>
     </div>
   );
+}
+
+// Portal Component
+interface PortalProps {
+  container: HTMLElement;
+  children: React.ReactNode;
+}
+
+function Portal({ container, children }: PortalProps) {
+  return container ? createPortal(children, container) : null;
 }
 
 export function DashboardSidebar({
@@ -263,6 +278,30 @@ export function DashboardSidebar({
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [isCreatingBoard, setIsCreatingBoard] = useState(false);
   const [createError, setCreateError] = useState<string | undefined>();
+
+  // Create portal containers for modals
+  const createModalContainerRef = useRef<HTMLDivElement | null>(null);
+  const settingsModalContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Create portal containers on mount
+    createModalContainerRef.current = document.createElement("div");
+    settingsModalContainerRef.current = document.createElement("div");
+
+    document.body.appendChild(createModalContainerRef.current);
+    document.body.appendChild(settingsModalContainerRef.current);
+
+    return () => {
+      // Clean up on unmount
+      if (createModalContainerRef.current) {
+        document.body.removeChild(createModalContainerRef.current);
+      }
+      if (settingsModalContainerRef.current) {
+        document.body.removeChild(settingsModalContainerRef.current);
+      }
+    };
+  }, []);
+
   const {
     profile,
     loading: profileLoading,
@@ -290,14 +329,13 @@ export function DashboardSidebar({
     }
   }, [loadProfile, loadBoards, initialized]);
 
-  const { loadLimits, limits, getTierDetails } = useSubscription();
+  const { loadLimits, getTierDetails } = useSubscription();
 
   useEffect(() => {
     loadLimits();
-  }, []);
+  }, [loadLimits]);
 
-  const tierDetails = getTierDetails(profile?.subscription_tier);
-  console.log(tierDetails);
+  const tierDetails = getTierDetails(profile?.subscription_tier || "");
   const maxPdfs = tierDetails?.max_pdfs;
   const maxMessages = tierDetails?.max_messages;
 
@@ -316,26 +354,6 @@ export function DashboardSidebar({
 
   const pdfProgress = maxPdfs ? (usedPdfs / maxPdfs) * 100 : 0;
   const messageProgress = maxMessages ? (usedMessages / maxMessages) * 100 : 0;
-
-  // Color options for boards (cycling through them)
-  const boardColors = [
-    "bg-blue-500",
-    "bg-purple-500",
-    "bg-green-500",
-    "bg-orange-500",
-    "bg-pink-500",
-    "bg-indigo-500",
-    "bg-teal-500",
-    "bg-red-500",
-  ];
-
-  // Get color for board based on its color property or fallback to cycling colors
-  const getBoardColor = (board: any, index: number) => {
-    if (board.color) {
-      return board.color.startsWith("bg-") ? board.color : `bg-blue-500`;
-    }
-    return boardColors[index % boardColors.length];
-  };
 
   const handleCreateNewBoard = () => {
     setIsCreateModalOpen(true);
@@ -364,31 +382,62 @@ export function DashboardSidebar({
 
   return (
     <div className="w-72 h-screen bg-white border-r border-black/5 flex flex-col">
-      {/* Create Board Modal */}
-      <CreateBoardModal
-        isOpen={isCreateModalOpen}
-        onClose={() => {
-          setIsCreateModalOpen(false);
-          setCreateError(undefined);
-        }}
-        onSubmit={handleCreateBoardSubmit}
-        isLoading={isCreatingBoard}
-        error={createError}
-      />
+      {/* Create Board Modal Portal */}
+      {createModalContainerRef.current && isCreateModalOpen && (
+        <Portal container={createModalContainerRef.current}>
+          <div className="fixed inset-0 flex items-center justify-center z-[9999] animate-in fade-in duration-200">
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300"
+              onClick={() => {
+                setIsCreateModalOpen(false);
+                setCreateError(undefined);
+              }}
+            />
+            <div className="relative w-full max-w-md p-4">
+              <div className="relative bg-white rounded-xl shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+                <CreateBoardModal
+                  isOpen={isCreateModalOpen}
+                  onClose={() => {
+                    setIsCreateModalOpen(false);
+                    setCreateError(undefined);
+                  }}
+                  onSubmit={handleCreateBoardSubmit}
+                  isLoading={isCreatingBoard}
+                  error={createError}
+                />
+              </div>
+            </div>
+          </div>
+        </Portal>
+      )}
 
-      {/* Settings Modal */}
-      <SettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        userName={userName}
-        userEmail={userEmail}
-        currentPlan={profile?.subscription_tier}
-        usedPdfs={usedPdfs}
-        usedMessages={usedMessages}
-        maxPdfs={maxPdfs || 0}
-        maxMessages={maxMessages || 0}
-        onLogout={handleLogout}
-      />
+      {/* Settings Modal Portal */}
+      {settingsModalContainerRef.current && isSettingsModalOpen && (
+        <Portal container={settingsModalContainerRef.current}>
+          <div className="fixed inset-0 flex items-center justify-center z-[9999] animate-in fade-in duration-200">
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300"
+              onClick={() => setIsSettingsModalOpen(false)}
+            />
+            <div className="relative w-full max-w-md p-4">
+              <div className="relative bg-white rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+                <SettingsModal
+                  isOpen={isSettingsModalOpen}
+                  onClose={() => setIsSettingsModalOpen(false)}
+                  userName={userName}
+                  userEmail={userEmail}
+                  currentPlan={profile?.subscription_tier || ""}
+                  usedPdfs={usedPdfs}
+                  usedMessages={usedMessages}
+                  maxPdfs={maxPdfs || 0}
+                  maxMessages={maxMessages || 0}
+                  onLogout={handleLogout}
+                />
+              </div>
+            </div>
+          </div>
+        </Portal>
+      )}
 
       {/* Header */}
       <div className="p-6 pb-4">
@@ -415,8 +464,8 @@ export function DashboardSidebar({
         {/* Boards Section */}
         <div className="mb-6 flex-1 min-h-0">
           <div className="flex items-center justify-between mb-4 px-4">
-            <h2 className="text-xs font-bold text-black/60 uppercase tracking-wider">
-              Boards
+            <h2 className="text-xs font-bold text-zinc-900 uppercase tracking-wider">
+              Your Boards
             </h2>
           </div>
 
@@ -427,7 +476,7 @@ export function DashboardSidebar({
                 onClick={() => setActiveBoard("all")}
                 className={`w-full flex items-center space-x-3 px-3 py-2.5 text-left rounded-lg transition-all duration-200 group ${
                   activeBoard === "all"
-                    ? "bg-black shadow-lg"
+                    ? "bg-gradient-to-b from-zinc-600 via-zinc-800 to-zinc-900 shadow-lg"
                     : "hover:bg-black/5"
                 }`}
               >
@@ -486,7 +535,7 @@ export function DashboardSidebar({
             </div>
           ) : (
             <div className="px-2 space-y-1 mt-3 overflow-y-auto max-h-[calc(68vh-24rem)] scrollbar-thin scrollbar-thumb-black/20 scrollbar-track-transparent hover:scrollbar-thumb-black/30">
-              {boards?.map((board: any, index: number) => (
+              {boards?.map((board: Board) => (
                 <div key={board.id}>
                   <Link href={`/dashboard/board/${board.id}`}>
                     <button
@@ -546,14 +595,14 @@ export function DashboardSidebar({
               className="w-full group relative overflow-hidden"
             >
               <div className="relative flex items-center space-x-3 px-4 py-3.5 bg-white hover:bg-black/5 rounded-lg border-2 border-dashed border-black/10 transition-all duration-200">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                   <Plus className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 text-left">
-                  <span className="text-sm font-bold text-black">
+                  <span className="text-sm font-inter-tight font-medium text-black">
                     Create New Board
                   </span>
-                  <p className="text-xs text-black/60">
+                  <p className="text-xs text-black/60 font-inter-light opacity-80">
                     Start organizing your notes
                   </p>
                 </div>
@@ -572,17 +621,17 @@ export function DashboardSidebar({
             <div className="space-y-3">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="flex items-center justify-center gap-1 text-xs font-bold text-black/60 uppercase tracking-wide">
+                  <span className="flex items-center justify-center gap-1 text-xs font-semibold text-black/60 uppercase tracking-wide">
                     PDFs
                     <FileCode className="w-4 h-4 text-blue-600" />
                   </span>
-                  <span className="text-xs font-bold text-black">
+                  <span className="text-xs font-semibold text-black">
                     {usedPdfs || 0}/{maxPdfs || 0}
                   </span>
                 </div>
                 <div className="w-full bg-black/5 rounded-full h-1.5">
                   <div
-                    className="bg-blue-600 h-1.5 rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 h-1 rounded-full transition-all duration-500"
                     style={{ width: `${pdfProgress || 0}%` }}
                   ></div>
                 </div>
@@ -590,17 +639,17 @@ export function DashboardSidebar({
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="flex items-center justify-center gap-1 text-xs font-bold text-black/60 uppercase tracking-wide">
+                  <span className="flex items-center justify-center gap-1 text-xs font-semibold text-black/60 uppercase tracking-wide">
                     Messages
                     <Bot className="w-4 h-4 text-purple-600" />
                   </span>
-                  <span className="text-xs font-bold text-black">
+                  <span className="text-xs font-semibold text-black">
                     {usedMessages || 0}/{maxMessages || 0}
                   </span>
                 </div>
                 <div className="w-full bg-black/5 rounded-full h-1.5">
                   <div
-                    className="bg-purple-600 h-1.5 rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-purple-500 via-purple-500 to-purple-500 h-1 rounded-full transition-all duration-500"
                     style={{ width: `${messageProgress || 0}%` }}
                   ></div>
                 </div>
@@ -611,7 +660,7 @@ export function DashboardSidebar({
           {/* Upgrade Button */}
           <button className="w-full group relative overflow-hidden">
             <Link href="/pricing">
-              <div className="relative flex items-center justify-center space-x-2 py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg transition-all duration-200">
+              <div className="relative flex items-center justify-center space-x-2 py-3 px-4 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg transition-all duration-200">
                 <div className="flex items-center space-x-2">
                   <Crown className="w-4 h-4 text-white" />
                   <span className="text-sm font-bold text-white">
@@ -627,11 +676,11 @@ export function DashboardSidebar({
         {/* User Info */}
         <div className="p-4 border-t border-black/5">
           <div className="flex items-center space-x-3 bg-white rounded-lg p-3 border-2 border-black/5">
-            <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
-              <User className="w-4 h-4 text-white" />
+            <div className="w-9 h-9 bg-gradient-to-b from-blue-500 via-blue-500 to-blue-500/40 rounded-lg flex items-center justify-center text-white text-lg font-medium">
+              {userName.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-black truncate">
+              <p className="text-sm font-medium text-black truncate">
                 {userName}
               </p>
               <p className="text-xs text-black/60 truncate">{userEmail}</p>

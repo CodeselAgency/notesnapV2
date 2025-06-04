@@ -105,23 +105,24 @@ const Faq = () => {
 
     // Effect to handle height animations with accurate timing
     useEffect(() => {
-      // For measuring height
       const updateHeight = () => {
         if (!contentRef.current) return;
-
+        const contentHeight = contentRef.current.scrollHeight;
+        
         if (isActive) {
-          // Get exact content height for opening animation
-          const contentHeight = contentRef.current.scrollHeight;
           setHeight(contentHeight);
         } else {
-          // Add small delay for closing to coordinate with opacity
+          // First let the content fade out
+          contentRef.current.style.opacity = '0';
+          contentRef.current.style.transform = 'translateY(-8px)';
+          
+          // Then animate the height
           setTimeout(() => {
             setHeight(0);
-          }, 75);
+          }, 200);
         }
       };
 
-      // Call immediately and also add resize listener for dynamic content
       updateHeight();
       window.addEventListener("resize", updateHeight);
 
@@ -131,12 +132,10 @@ const Faq = () => {
     }, [isActive]);
 
     return (
-      <div
-        className={`mb-4 border-2 border-zinc-100 px-4 pb-2 p-2 rounded-xl transition-all duration-800 cursor-pointer`}
-      >
+      <div className={`mb-4 px-4 pb-2 p-2 rounded-xl transition-all duration-800 cursor-pointer shadow-xl shadow-blue-100 border border-blue-100`}>
         <button
           onClick={onClick}
-          className="flex justify-between items-center w-full text-left py-3 focus:outline-none focus:ring-0 group transition-all duration-300"
+          className="flex justify-between items-center w-full text-left py-3 focus:outline-none focus:ring-0 cursor-pointer group transition-all duration-300"
           aria-expanded={isActive}
         >
           <h3 className="text-lg font-medium text-gray-900 transition-colors group-hover:text-gray-700">
@@ -148,10 +147,8 @@ const Faq = () => {
             } group-hover:bg-purple-100`}
           >
             <div
-              className={`transform transition-transform duration-800 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] ${
-                isActive
-                  ? "rotate-[135deg] transition-all duration-800"
-                  : "rotate-0"
+              className={`transform transition-transform duration-500 ${
+                isActive ? "rotate-[135deg]" : "rotate-0"
               }`}
             >
               <FiPlus className="h-5 w-5 text-gray-700" />
@@ -162,11 +159,9 @@ const Faq = () => {
         <div
           style={{
             height: typeof height === "number" ? `${height}px` : height,
-            transition: `height ${
-              isActive ? "700ms" : "500ms"
-            } cubic-bezier(0.34, 1.56, 0.64, 1)`,
+            transition: "height 400ms cubic-bezier(0.4, 0, 0.2, 1)",
+            overflow: "hidden"
           }}
-          className="overflow-hidden"
           aria-hidden={!isActive}
         >
           <div
@@ -175,14 +170,7 @@ const Faq = () => {
             style={{
               opacity: isActive ? 1 : 0,
               transform: `translateY(${isActive ? "0" : "-8px"})`,
-              transition: `
-                opacity ${
-                  isActive ? "400ms" : "300ms"
-                } cubic-bezier(0.4, 0.0, 0.2, 1),
-                transform ${
-                  isActive ? "500ms" : "300ms"
-                } cubic-bezier(0.34, 1.56, 0.64, 1)
-              `,
+              transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1)",
               transitionDelay: isActive ? "150ms" : "0ms",
             }}
           >

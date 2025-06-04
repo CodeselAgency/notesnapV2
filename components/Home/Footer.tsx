@@ -81,12 +81,12 @@ const Footer = () => {
     <section className="p-4 max-sm:p-3 ">
       <footer className={`bg-black rounded-[18px]`}>
         <LampContainer>
-          <motion.h1 className="mt-0 bg-white py-0 bg-clip-text text-center text-3xl sm:text-4xl md:text-7xl font-medium tracking-tight text-transparent">
+          <motion.h1 className="mt-0 bg-white py-0 bg-clip-text text-center text-3xl sm:text-4xl md:text-7xl  tracking-wide text-transparent font-semibold">
             NoteSnap
             <br />
           </motion.h1>
           <motion.div>
-            <motion.span className="text-white text-base sm:text-lg w-full font-semibold font-inter text-center block">
+            <motion.span className="text-white text-base sm:text-lg w-full font-medium font-inter text-center block tracking-wide">
               Empowering Your Studies, Elevating Your Grades.
             </motion.span>
           </motion.div>
