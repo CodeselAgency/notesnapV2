@@ -156,10 +156,9 @@ const Hero = () => {
               <span className="font-bold text-7xl  max-sm:text-4xl">Why</span>
               <span className="font-bold text-7xl  max-sm:text-4xl">
                 Spending{" "}
-                <span className="text-gray-400 line-through decoration-red-500 decoration-2">
+                <span className="text-gray-400 line-through decoration-red-500 decoration-2 italic transform -skew-x-12 inline-block font-serif hover:skew-x-0 transition-all duration-300 ">
                   Hours
                 </span>
-                ?
               </span>
             </div>
             <div className="flex items-center flex-wrap justify-center gap-x-2 sm:gap-x-3 md:gap-x-4 leading-tight">
@@ -168,9 +167,8 @@ const Hero = () => {
               </span>
               <span className="font-bold text-7xl  max-sm:text-4xl">
                 Materials in{" "}
-                <span className="text-purple-600 relative">
+                <span className="text-purple-600 relative italic transform -skew-x-12 inline-block font-serif hover:skew-x-0 transition-all duration-300">
                   Minutes
-                  {/* <span className="absolute bottom-2 left-0 w-full h-3 bg-purple-200/50 -z-10 rounded-lg"></span> */}
                 </span>
               </span>
             </div>
