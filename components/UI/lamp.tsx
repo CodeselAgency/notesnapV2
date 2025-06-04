@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "motion/react";
-import { cn } from "@/lib/utlis";
+import { cn } from "@/lib/utils";
 
 export default function LampDemo() {
   return (

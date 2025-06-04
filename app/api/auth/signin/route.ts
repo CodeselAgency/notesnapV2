@@ -4,7 +4,7 @@ import { createClient } from '@/lib/serverSupabase'
 export async function POST(request: NextRequest) {
     try {
         const { provider } = await request.json()
-
+        
         if (provider !== 'google') {
             return NextResponse.json(
                 { message: 'Only Google provider is supported' },
@@ -13,11 +13,16 @@ export async function POST(request: NextRequest) {
         }
 
         const supabase = await createClient()
-
+        
+        // Get protocol and host dynamically
+        const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+        const host = request.headers.get('host') || 'localhost:3000';
+        const redirectUrl = `${protocol}://${host}/api/auth/callback`;
+        
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `http://localhost:3000/api/auth/callback`,
+                redirectTo: redirectUrl, // Use dynamic URL
             },
         })
 

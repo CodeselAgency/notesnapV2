@@ -51,7 +51,7 @@ const BentoGrid = () => {
   };
 
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-gray-50 to-white">
+    <section className="py-16 sm:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -64,9 +64,9 @@ const BentoGrid = () => {
             className={`${outfit.className} text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4`}
           >
             Everything you need to
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600/100 via-blue-600/100 to-blue-600/100 bg-clip-text text-transparent">
               {" "}
-              study smarter
+              Study smarter
             </span>
           </h2>
           <p
@@ -88,7 +88,7 @@ const BentoGrid = () => {
           {/* Large Card - AI Flashcards */}
           <motion.div
             variants={itemVariants}
-            className="lg:col-span-2 lg:row-span-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden group hover:scale-[1.02] transition-transform duration-300"
+            className="lg:col-span-2 lg:row-span-2 bg-gradient-to-br from-blue-500/100 via-blue-500/100 to-blue-500/100 rounded-2xl px-6 py-2 max-sm:px-8 max-sm:py-4 text-white relative overflow-hidden "
           >
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-4">

@@ -9,6 +9,7 @@ import {
   Timer,
   Brain,
   BookOpen,
+  Check,
 } from "lucide-react";
 
 interface NotesTabProps {
@@ -34,8 +35,8 @@ export function NotesTab({ pdf }: NotesTabProps) {
     notes = [];
   }
 
+  const [isCopying , setIsCopying] = useState(false);
   const summary = pdf?.summary || "";
-
   if ((!notes || notes.length === 0) && !summary) {
     return (
       <div className="flex-1 flex items-center justify-center bg-white">
@@ -120,18 +121,26 @@ export function NotesTab({ pdf }: NotesTabProps) {
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => copyToClipboard(notes || [])}
-                className="p-4 bg-white text-black border-2 border-black/5 rounded-xl hover:border-black/10 transition-all duration-200 shadow-lg hover:shadow-xl"
+                onClick={() => {
+                  copyToClipboard(notes || []);
+                  setIsCopying(true);
+                  setTimeout(() => setIsCopying(false), 2000);
+                }}
+                className="p-2 bg-white text-black border-2 border-black/5 rounded-lg hover:border-black/10 transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
                 title="Copy notes"
               >
-                <Copy className="w-6 h-6" />
+                {isCopying ? (
+                  <Check className="w-4 h-4 " />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
               </button>
               <button
                 onClick={downloadNotes}
-                className="p-4 bg-black text-white rounded-xl hover:bg-gray-900 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="p-2 bg-black text-white rounded-lg hover:bg-gray-900 transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
                 title="Download notes"
               >
-                <Download className="w-6 h-6" />
+                <Download className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -174,8 +183,8 @@ export function NotesTab({ pdf }: NotesTabProps) {
                       className="bg-white rounded-2xl shadow-lg border-2 border-black/5 p-6 hover:shadow-xl transition-all duration-200"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 bg-black rounded-xl flex items-center justify-center flex-shrink-0">
-                          <span className="text-white text-sm font-medium">
+                        <div className="w-8 h-8  flex items-center justify-center flex-shrink-0 border border-black/50 rounded-full">
+                          <span className="text-black text-md font-semibold">
                             {index + 1}
                           </span>
                         </div>

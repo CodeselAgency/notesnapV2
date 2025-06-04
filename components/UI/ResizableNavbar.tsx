@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utlis";
+import { cn } from "@/lib/utils";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";

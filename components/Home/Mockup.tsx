@@ -15,7 +15,7 @@ const Mockup = () => {
         src="/images/notesnap-mockup.png"
         alt="mockup image"
         width={1000}
-        height={700}
+        height={900}
         objectFit="contain"
         className=" rounded-lg"
       />

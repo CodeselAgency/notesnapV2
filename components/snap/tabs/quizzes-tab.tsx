@@ -216,7 +216,7 @@ export function QuizzesTab({
             </div>
 
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Quiz Complete!
+              Your Score 
             </h2>
 
             <div className="text-6xl font-bold text-black mb-2">

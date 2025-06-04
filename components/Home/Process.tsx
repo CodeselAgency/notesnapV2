@@ -3,12 +3,15 @@ import Image from "next/image";
 export default function Process() {
     return (
         <section className="bg-white py-12 md:py-16 flex flex-col items-center justify-center w-full">
-            <h2 className="text-7xl font-roboto font-semibold text-center mb-8">How it works</h2>
+            <h2 className="text-7xl font-roboto font-semibold text-center mb-8">Let&apos;s Break It Down</h2>
+            <p className="text-center text-gray-600 mb-8">
+            A clear, step-by-step look at how it all works—simple, fast, and easy to follow.
+            </p>
             <div className="container mx-auto px-4 max-w-6xl">
                 {/* First Row - 60/40 split */}
                 <div className="flex flex-col md:flex-row gap-4 mb-4">
                     {/* Create Account Card - 60% width */}
-                    <div className="w-full md:w-[60%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col">
+                    <div className="w-full md:w-[60%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col shadow-lg">
                         <div className="relative h-[280px] w-full bg-gray-50 rounded-lg overflow-hidden">
                             <Image 
                                 src="/images/bento-1.png" 
@@ -21,13 +24,13 @@ export default function Process() {
                         <div className="p-3 flex flex-col mt-1">
                             <h3 className="text-lg font-inter-tight font-medium text-[#1a1a1a]">Create Your Account</h3>
                             <p className="text-sm text-[#666] mt-1 font-inter-tight font-normal opacity-80">
-                                Seamlessly sign up with Google and set up your personalized workspace.
+                                Seamlessly sign up with Google and set up your boards.
                             </p>
                         </div>
                     </div>
 
                     {/* Upload PDF Card - 40% width */}
-                    <div className="w-full md:w-[40%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col">
+                    <div className="w-full md:w-[40%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col shadow-lg">
                         <div className="relative h-[280px] w-full bg-gray-50 rounded-lg overflow-hidden">
                             <Image 
                                 src="/images/bento-2.png" 
@@ -49,7 +52,7 @@ export default function Process() {
                 {/* Second Row - 45/55 split */}
                 <div className="flex flex-col md:flex-row gap-4">
                     {/* Get Everything Card - 45% width */}
-                    <div className="w-full md:w-[45%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col">
+                    <div className="w-full md:w-[45%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col shadow-lg">
                         <div className="relative h-[280px] w-full bg-gray-50 rounded-lg overflow-hidden">
                             <Image 
                                 src="/images/bento-3.png" 
@@ -68,7 +71,7 @@ export default function Process() {
                     </div>
 
                     {/* Transfer to Notion Card - 55% width */}
-                    <div className="w-full md:w-[55%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col">
+                    <div className="w-full md:w-[55%] bg-white rounded-xl p-2 border border-gray-200 flex flex-col shadow-lg">
                         <div className="relative h-[280px] w-full bg-gray-50 rounded-lg overflow-hidden">
                             <Image 
                                 src="/images/bento-4.png" 
@@ -81,7 +84,7 @@ export default function Process() {
                         <div className="p-3 flex flex-col mt-1">
                             <h3 className="text-lg font-inter-tight font-medium text-[#1a1a1a]">Transfer Insights to Notion</h3>
                             <p className="text-sm text-[#666] mt-1 font-inter-tight font-normal opacity-80">
-                                Transfer all your results to Notion with a single click for effortless organization.
+                                Transfer all your results to Notion with a single click for effortless organization.Coming soon!
                             </p>
                         </div>
                     </div>

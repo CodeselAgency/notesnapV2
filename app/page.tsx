@@ -11,6 +11,8 @@ import Process from "@/components/Home/Process";
 import HowItWorks from "@/components/Home/HowitWorks";
 import { ResizableNavbar } from "@/components/Home/ResizebleNavbar";
 import BentoGrid from "@/components/Home/BentoGrid";
+import Navbar from "@/components/Home/Navbar";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 export default function Home() {
   return (
     <div
@@ -77,26 +79,26 @@ export default function Home() {
         }}
       />
 
-      {/* <SmoothScrollProvider> */}
+      <SmoothScrollProvider>
 
         <div className="relative z-10">
           {/* Header/Navigation */}
 
+          <Navbar />
           {/* <Navbar /> */}
-          <ResizableNavbar />
           <Hero />
 
-          <MockUp />
+          {/* <MockUp /> */}
           
           <Trust />
-          <BentoGrid />
+          {/* <BentoGrid /> */}
           {/* <HowItWorks /> */}
           <Process />
           <Testimonals />
           <Faq />
           <Footer />
         </div>
-      {/* </SmoothScrollProvider> */}
+      </SmoothScrollProvider>
     </div>
   );
 }

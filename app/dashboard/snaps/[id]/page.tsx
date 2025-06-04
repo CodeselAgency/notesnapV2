@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Share2, MoreVertical } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { usePdf } from "@/hooks/usePdf";
 import { TabNavigation } from "@/components/snap/tab-navigation";
@@ -157,24 +157,41 @@ export default function SnapPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="bg-white border-b border-gray-200">
-        <div className="px-6 flex items-center">
-          <button
-            onClick={() => router.back()}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-4"
-          >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
-          </button>
+      {/* Fixed Header with Tab Navigation */}
+      <div className="bg-white  fixed top-0 left-0 right-0 z-10 lg:left-1/5">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="px-4 max-sm:px-6 lg:px-8 py-2 flex items-center gap-2 max-sm:gap-4 ">
+            {/* Back Button */}
+            <button
+              onClick={() => router.back()}
+              className="group p-2 hover:bg-gray-100 rounded-lg transition-colors max-sm:hidden"
+              aria-label="Go back"
+            >
+              <ArrowLeft className="w-5 h-5 text-gray-600 group-hover:text-gray-900" />
+            </button>
 
-          <TabNavigation
-            tabs={tabs}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          />
+
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-6 bg-gray-200" />
+
+            {/* Tab Navigation - Takes remaining space */}
+            <div className="flex-1 min-w-0">
+              <TabNavigation
+                tabs={tabs}
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+              />
+            </div>
+
+          </div>
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col">{renderTabContent()}</div>
+      {/* Content Padding to Account for Fixed Header */}
+      <div className="pt-[60px] sm:pt-[64px]">
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col">{renderTabContent()}</div>
+      </div>
     </div>
   );
 }
