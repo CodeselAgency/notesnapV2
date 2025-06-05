@@ -73,7 +73,7 @@ This document has been analyzed using AI-powered tools to provide insights and e
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-3">
                     <div className="relative">
-                      <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="w-10 h-10 bg-gradient-to-r from-zinc-600 via-zinc-800 to-zinc-500 rounded-xl flex items-center justify-center shadow-lg">
                         <FileText className="w-5 h-5 text-white" />
                       </div>
                       <div className="absolute -top-1 -right-1">
@@ -86,7 +86,7 @@ This document has been analyzed using AI-powered tools to provide insights and e
                       </h1>
                       <div className="flex items-center gap-4 mt-1">
                         <p className="text-black/60 text-sm flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5" />
+                          <Clock className="w-3.5 h-3.5 font-sans font-semibold" />
                           {new Date(pdf.updated_at).toLocaleDateString()}
                         </p>
                         <p className="text-black/60 text-sm flex items-center gap-1.5">
@@ -112,7 +112,7 @@ This document has been analyzed using AI-powered tools to provide insights and e
               <div className="mt-6 pt-4 border-t border-black/5">
                 <button
                   onClick={() => setIsSummaryExpanded(!isSummaryExpanded)}
-                  className="px-4 py-2.5 bg-black hover:bg-black/90 text-white rounded-lg transition-all duration-200 shadow-lg font-medium text-sm"
+                  className="px-4 py-2.5 bg-gradient-to-r from-zinc-700 via-zinc-800 to-zinc-600 hover:bg-black/90 text-white rounded-lg transition-all duration-200 shadow-lg font-medium text-sm cursor-pointer"
                 >
                   {isSummaryExpanded ? "Show Less" : "Show Full Analysis"}
                 </button>
@@ -169,10 +169,10 @@ function QuickActionCard({
   return (
     <button
       onClick={onClick}
-      className="p-5 bg-white rounded-lg border-2 border-black/5 hover:border-black/10 shadow-lg transition-all duration-200 text-left group"
+      className="p-5 bg-white rounded-lg border-2 border-black/5 hover:border-black/10 shadow-lg transition-all duration-200 text-left group cursor-pointer"
     >
       <div className="relative mb-4">
-        <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+        <div className="w-10 h-10 bg-gradient-to-r from-zinc-600 via-zinc-800 to-zinc-500 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
           <Icon className="w-5 h-5 text-white" />
         </div>
         <div className="absolute -top-1 -right-1">

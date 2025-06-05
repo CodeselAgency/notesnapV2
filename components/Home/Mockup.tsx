@@ -11,7 +11,7 @@ const Mockup = () => {
       transition={{ duration: 0.2, delay: 0.8 }}
       className="flex justify-center items-center mb-20 mt-10 max-sm:px-6 fade-in-10"
     >
-      <div className="p-2 bg-gradient-to-b from-blue-500/60 via-blue-500 to-blue-500 rounded-lg shadow-2xl shadow-blue-500/30">
+      <div className="p-2 bg-gradient-to-b from-blue-500/60 via-blue-500 to-blue-500 rounded-lg shadow-2xl shadow-blue-500">
         <Image
           src="/images/mockup-image.png"
           alt="mockup image"

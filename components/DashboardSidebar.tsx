@@ -507,7 +507,7 @@ export function DashboardSidebar({
           <div className="px-2 mt-3">
             <button
               onClick={handleCreateNewBoard}
-              className="w-full group relative overflow-hidden"
+              className="w-full group relative overflow-hidden cursor-pointer"
             >
               <div className="relative flex items-center space-x-3 px-4 py-3.5 bg-white hover:bg-black/5 rounded-lg border-2 border-dashed border-black/10 transition-all duration-200">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500/60 via-blue-500 to-blue-500 rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">

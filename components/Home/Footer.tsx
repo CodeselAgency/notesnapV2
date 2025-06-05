@@ -108,7 +108,7 @@ const Footer = () => {
                   NoteSnap
                 </h3>
               </div>
-              <p className="text-white text-xs sm:text-sm leading-relaxed font-semibold font-inter max-w-xs md:max-w-none mx-auto md:mx-0">
+              <p className="text-white text-xs sm:text-sm leading-relaxed tracking-wide font-medium font-inter-tight max-w-xs md:max-w-none mx-auto md:mx-0">
                 Empowering Your Studies, Elevating Your Grades. Our platform
                 transforms how you learn and retain information.
               </p>

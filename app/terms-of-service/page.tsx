@@ -6,12 +6,13 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
-
+import Navbar from "@/components/Home/Navbar";
 export default function TermsOfUsePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <Navbar />
+      {/* <div className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">
             <Link
@@ -36,6 +37,11 @@ export default function TermsOfUsePage() {
             </div>
           </div>
         </div>
+      </div> */}
+
+      <div className="flex flex-col items-center justify-center mt-20">
+        <h1 className="text-4xl font-bold">Terms of Use</h1>
+        <p className="text-gray-600 mt-1 text-sm">Last updated: 05/06/2025</p>
       </div>
 
       {/* Content */}

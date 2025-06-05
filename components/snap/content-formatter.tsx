@@ -53,7 +53,7 @@ export function ContentFormatter({ content }: ContentFormatterProps) {
         return <br key={index} />;
       }
       return (
-        <p key={index} className="text-gray-700 mb-3 leading-relaxed">
+        <p key={index} className="text-gray-700 mb-3 leading-relaxed ">
           {line}
         </p>
       );

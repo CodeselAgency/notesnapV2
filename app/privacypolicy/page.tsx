@@ -1,20 +1,15 @@
 import { ArrowLeft, Shield, Eye, Cookie, Users, Mail } from "lucide-react";
 import Link from "next/link";
+import  Navbar  from "@/components/Home/Navbar";
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <Navbar />
+      {/* <div className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-4"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm font-medium">Back to Home</span>
-            </Link>
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                 <Shield className="w-6 h-6 text-green-600" />
@@ -28,8 +23,14 @@ export default function PrivacyPolicyPage() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
+      
+
+      <div className="flex flex-col items-center justify-center mt-20">
+        <h1 className="text-4xl font-bold">Privacy Policy</h1>
+        <p className="text-gray-600 mt-1 text-sm">Last updated: 05/06/2025</p>
+      </div>
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
