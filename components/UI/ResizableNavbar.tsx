@@ -175,7 +175,7 @@ export const NavbarLogo = () => {
       className="relative z-20 flex items-center space-x-2 px-2 py-1"
     >
       <Image
-        src="/images/notesnap-logo3.png"
+        src="/images/new-logo.png"
         alt="logo"
         width={35}
         height={35}

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Outfit } from "next/font/google";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -90,15 +91,12 @@ export default function SignIn() {
           className="text-center mb-12"
         >
           <div className="inline-block">
-            <div className="relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 via-purple-500 to-violet-600 rounded-2xl shadow-xl flex items-center justify-center transform -rotate-6 group transition-all duration-300 hover:rotate-0">
-                <span className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
-                  N
-                </span>
-                <div className="absolute inset-0 rounded-2xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-20 h-20 bg-gradient-to-br from-indigo-500/10 to-purple-600/10 rounded-2xl transform rotate-6" />
-            </div>
+            <Image
+              src="/images/new-logo.png"
+              alt="Logo"
+              width={100}
+              height={100}
+            />
           </div>
         </motion.div>
 

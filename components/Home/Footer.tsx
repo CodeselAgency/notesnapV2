@@ -98,7 +98,7 @@ const Footer = () => {
             <div className="md:col-span-3 space-y-4 sm:space-y-5 flex flex-col items-center md:items-start">
               <div className="flex items-center justify-center md:justify-start space-x-2">
                 <Image
-                  src="/images/notesnap-logo3.png"
+                  src="/images/new-logo.png"
                   alt="NoteSnap Logo"
                   width={40}
                   height={40}

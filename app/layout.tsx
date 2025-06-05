@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Notesnap",
     images: [
       {
-        url: "/images/notesnap-logo3.png",
+        url: "/images/new-logo.png",
         width: 1200,
         height: 630,
         alt: "Notesnap - AI PDF Assistant",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title: "Notesnap - AI PDF Assistant",
     description:
       "Use AI to chat with your PDFs, summarize content, and generate insights instantly.",
-    images: ["/images/notesnap-logo3.png"],
+    images: ["/images/new-logo.png"],
   },
   alternates: {
     canonical: "https://notesnap.app/",

@@ -23,6 +23,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useSubscription } from "@/hooks/useSubscription";
+import Image from "next/image";
 
 interface DashboardSidebarProps {
   userEmail?: string;
@@ -358,8 +359,8 @@ export function DashboardSidebar({
       <div className="p-6 pb-4">
         <div className="flex items-center space-x-3">
           <div className="relative">
-            <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center shadow-lg">
-              <Sparkles className="w-7 h-7 text-white" />
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-xl">
+              <Image src="/images/new-logo.png" alt="Logo" width={50} height={50} />
             </div>
             {/* <div className="absolute -top-1 -right-1">
               <Sparkles className="w-5 h-5 text-yellow-400" />
@@ -369,7 +370,7 @@ export function DashboardSidebar({
             <h1 className="text-xl font-bold text-black tracking-tight">
               NoteSnap
             </h1>
-            <p className="text-sm text-black/60 font-medium">Smart Notes</p>
+            {/* <p className="text-sm text-black/60 font-medium">PDF Notes</p> */}
           </div>
         </div>
       </div>

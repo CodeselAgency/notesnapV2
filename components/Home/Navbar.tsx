@@ -54,9 +54,9 @@ const Navbar = ({ user: propUser, onSignOut: propSignOut }: NavbarProps) => {
           {/* Logo - always visible */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center justify-start group">
-              <div className="relative w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-xl transition-transform duration-200 ease-out group-hover:scale-105">
+              <div className="relative w-12 h-12 max-sm:w-8 max-sm:h-8 rounded-xl transition-transform duration-200 ease-out group-hover:scale-105">
                 <Image
-                  src="/images/notesnap-logo3.png"
+                  src="/images/new-logo.png"
                   alt="Logo"
                   fill
                   className="object-contain rounded-lg"

@@ -116,7 +116,7 @@ export default function BlogPostPage() {
               "name": "Notesnap",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://notesnap.app/images/notesnap-logo3.png"
+                "url": "https://notesnap.app/images/new-logo.png"
               }
             },
             "mainEntityOfPage": {
@@ -325,7 +325,7 @@ export default function BlogPostPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1 }}
           >
-            <Image src="/images/notesnap-logo3.png" alt="Notesnap Logo" width={50} height={50} className="rounded-xl" />
+            <Image src="/images/new-logo.png" alt="Notesnap Logo" width={50} height={50} className="rounded-xl" />
             <div className="text-center md:text-left">
               <h4 className="font-semibold text-zinc-900 mb-1">Written by {post.author}</h4>
               <p className="text-zinc-600 text-sm mb-2">
