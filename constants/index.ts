@@ -1,4 +1,4 @@
-import { Camera, MessageSquare, BookOpen, FileText, Brain, Map } from 'lucide-react';
+import { Camera, MessageCircle, FlipHorizontal, ClipboardIcon, Network, NotebookPen } from 'lucide-react';
 
 export interface Tab {
     id: string;
@@ -19,35 +19,35 @@ export const tabs: Tab[] = [
     {
         id: "chat",
         name: "Chat",
-        icon: MessageSquare,
+        icon: MessageCircle,
         gradient: "from-blue-500 to-purple-500",
         description: "Intelligent conversation",
     },
     {
         id: "flashcards",
         name: "Flashcards",
-        icon: BookOpen,
+        icon: FlipHorizontal,
         gradient: "from-blue-500 to-purple-500",
         description: "Study with smart cards",
     },
     {
         id: "notes",
         name: "Notes",
-        icon: FileText,
+        icon: NotebookPen,
         gradient: "from-blue-500 to-purple-500",
         description: "Organized insights",
     },
     {
         id: "quizzes",
         name: "Quizzes",
-        icon: Brain,
+        icon: ClipboardIcon,
         gradient: "from-blue-500 to-purple-500",
         description: "Test your knowledge",
     },
     {
         id: "mindmap",
         name: "Mind Map",
-        icon: Map,
+        icon: Network,
         gradient: "from-blue-500 to-purple-500",
         description: "Visual connections",
     },
