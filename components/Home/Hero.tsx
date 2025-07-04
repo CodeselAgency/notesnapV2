@@ -14,7 +14,7 @@ const outfit = Outfit({
 
 const Hero = () => {
   return (
-    <motion.section className="mt-8 sm:mt-16 md:mt-24 px-3 sm:px-6 text-center flex items-center justify-center relative min-h-[90vh] sm:min-h-[85vh] md:min-h-[75vh] lg:min-h-[65vh] bg-white flex-col overflow-hidden">
+    <motion.section className="mt-16 sm:mt-20 md:mt-24 px-4 sm:px-6 text-center flex items-center justify-center relative min-h-screen sm:min-h-[85vh] md:min-h-[75vh] lg:min-h-[65vh] bg-white flex-col overflow-hidden">
       {/* Decorative Chips */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -128,17 +128,17 @@ const Hero = () => {
       </motion.div>
 
       {/* Hero Content */}
-      <motion.div className="mx-auto pt-2 sm:pt-8 md:pt-12 relative z-20 w-full max-w-screen-xl px-3 sm:px-6 md:px-8">
+      <motion.div className="mx-auto pt-4 sm:pt-8 md:pt-12 relative z-20 w-full max-w-screen-xl px-4 sm:px-6 md:px-8">
         {/* Social proof badge */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="flex justify-center mb-3 sm:mb-6 mx-auto"
+          className="flex justify-center mb-4 sm:mb-6 mx-auto"
         >
-          <div className="flex rounded-full items-center justify-center bg-green-50 border border-green-200 py-1 sm:py-1.5 px-2.5 sm:px-4 gap-1.5 sm:gap-2">
-            <div className="w-1.5 sm:w-2 h-1.5 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-green-700 text-[11px] sm:text-sm font-medium">
+          <div className="flex rounded-full items-center justify-center bg-green-50 border border-green-200 py-1.5 px-3 sm:px-4 gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-green-700 text-xs sm:text-sm font-medium">
               2,847 PDFs converted this week
             </span>
           </div>
@@ -149,23 +149,23 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className={`${outfit.className} font-bold mb-3 sm:mb-4 text-gray-900 leading-tight`}
+          className={`${outfit.className}  font-bold mb-4 max-sm:mb-6 text-gray-900 leading-tight`}
         >
-          <div className="flex flex-col items-center justify-center gap-0.5 sm:gap-2 md:gap-3">
-            <div className="flex items-center flex-wrap justify-center gap-x-1.5 sm:gap-x-3 leading-tight">
-              <span className="font-bold text-3xl sm:text-5xl md:text-7xl">Why</span>
-              <span className="font-bold text-3xl sm:text-5xl md:text-7xl">
+          <div className="flex flex-col items-center  justify-center gap-1 sm:gap-2 md:gap-3">
+            <div className="flex items-center flex-wrap justify-center gap-x-2 sm:gap-x-3 leading-tight">
+              <span className="font-bold text-7xl  max-sm:text-4xl">Why</span>
+              <span className="font-bold text-7xl  max-sm:text-4xl">
                 Spending{" "}
-                <span className="text-gray-400 line-through decoration-red-500 decoration-2 italic transform -skew-x-12 inline-block font-serif hover:skew-x-0 transition-all duration-300">
+                <span className="text-gray-400 line-through decoration-red-500 decoration-2 italic transform -skew-x-12 inline-block font-serif hover:skew-x-0 transition-all duration-300 ">
                   Hours
                 </span>
               </span>
             </div>
-            <div className="flex items-center flex-wrap justify-center gap-x-1.5 sm:gap-x-3 md:gap-x-4 leading-tight">
-              <span className="font-bold text-3xl sm:text-5xl md:text-7xl">
+            <div className="flex items-center flex-wrap justify-center gap-x-2 sm:gap-x-3 md:gap-x-4 leading-tight">
+              <span className="font-bold text-7xl  max-sm:text-4xl">
                 Get Study
               </span>
-              <span className="font-bold text-3xl sm:text-5xl md:text-7xl">
+              <span className="font-bold text-7xl  max-sm:text-4xl">
                 Materials in{" "}
                 <span className="text-purple-600 relative italic transform -skew-x-12 inline-block font-serif hover:skew-x-0 transition-all duration-300">
                   Minutes
@@ -180,7 +180,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 0.3 }}
-          className="font-medium mt-2 sm:mt-4 sm:mb-8 md:mt-6 text-xs sm:text-base md:text-lg lg:text-xl text-gray-800 max-w-[95%] sm:max-w-[800px] mx-auto leading-relaxed opacity-80 px-2"
+          className="font-medium mt-3 sm:mt-4 sm:mb-8 md:mt-6 text-sm sm:text-base md:text-lg lg:text-xl text-gray-800 max-w-[90%] sm:max-w-[800px] mx-auto leading-relaxed opacity-80"
         >
           AI-powered assistant that transforms any PDF into flashcards, quizzes,
           and mind maps in 60 seconds — study smarter, not harder
@@ -191,16 +191,16 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 0.3 }}
-          className="flex items-center justify-center gap-2 sm:gap-4 flex-col sm:flex-row px-4 sm:px-0"
+          className="flex items-center justify-center gap-3 sm:gap-4 flex-col sm:flex-row"
         >
           <Link href="/dashboard" className="w-full sm:w-auto">
-            <div className="bg-gradient-to-b from-blue-500/60 via-blue-500 to-blue-500 text-white px-4 sm:px-6 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center justify-center hover:opacity-90 transition-all duration-200 border border-blue-300/60 text-sm sm:text-base">
+            <div className="bg-gradient-to-b from-blue-500/60 via-blue-500 to-blue-500 text-white px-6 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center justify-center hover:opacity-90 transition-all duration-200 border  border-blue-300/60 ">
               Try for free
-              <IconArrowRight className="ml-2 -rotate-45 w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <IconArrowRight className="ml-2 -rotate-45 w-4 h-4" />
             </div>
           </Link>
           <Link href="/pricing" className="w-full sm:w-auto">
-            <div className="border border-blue-100 bg-white px-4 sm:px-6 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center justify-center text-blue-500 hover:bg-blue-50 transition-all duration-200 text-sm sm:text-base">
+            <div className="border border-blue-100 bg-white px-6 py-2.5 rounded-lg font-semibold cursor-pointer flex items-center justify-center text-blue-500 hover:bg-blue-50 transition-all duration-200">
               Pricing
             </div>
           </Link>

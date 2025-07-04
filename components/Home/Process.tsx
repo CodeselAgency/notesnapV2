@@ -3,10 +3,13 @@ import Image from "next/image";
 export default function Process() {
     return (
         <section className="bg-white py-12 md:py-16 flex flex-col items-center justify-center w-full">
-            <h2 className="text-7xl font-roboto font-semibold text-center mb-8">Let&apos;s Break It Down</h2>
-            <p className="text-center text-gray-600 mb-8">
+            <div className="flex flex-col items-center justify-center">
+            <h2 className="text-7xl font-roboto font-semibold text-center mb-8  max-sm:text-4xl">Let&apos;s Break It Down</h2>
+            <p className="text-center text-gray-600 mb-8 max-sm:text-md">
             A clear, step-by-step look at how it all works—simple, fast, and easy to follow.
             </p>
+            </div>
+           
             <div className="container mx-auto px-4 max-w-6xl">
                 {/* First Row - 60/40 split */}
                 <div className="flex flex-col md:flex-row gap-4 mb-4">

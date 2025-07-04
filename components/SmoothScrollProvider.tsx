@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useContext, ReactNode } from "react";
-import { useSmoothScroll } from "../hooks/useSmoothScroll";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 interface SmoothScrollContextType {
   lenis: ReturnType<typeof useSmoothScroll>;

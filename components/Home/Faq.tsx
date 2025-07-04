@@ -92,10 +92,12 @@ const Faq = () => {
 
   // Accordion item component with optimized animations
   const AccordionItem = ({
+    position,
     item,
     isActive,
     onClick,
   }: {
+    position:number;
     item: FaqItem;
     isActive: boolean;
     onClick: () => void;
@@ -132,26 +134,28 @@ const Faq = () => {
     }, [isActive]);
 
     return (
-      <div className={`mb-4 px-4 pb-2 p-2 rounded-xl transition-all duration-800 cursor-pointer shadow-xl shadow-blue-100 border border-blue-100`}>
+      <div className={`mb-4 px-4 pb-2 py-1 rounded-xl transition-all duration-800 cursor-pointer border`}>
         <button
           onClick={onClick}
-          className="flex justify-between items-center w-full text-left py-3 focus:outline-none focus:ring-0 cursor-pointer group transition-all duration-300"
+          className="flex justify-between items-center w-full text-left py-2 cursor-pointer group transition-all duration-300 ease-in "
           aria-expanded={isActive}
         >
-          <h3 className="text-lg font-medium text-gray-900 transition-colors group-hover:text-gray-700">
+          <h3 className="text-md font-medium text-gray-900 transition-colors group-hover:text-gray-700 flex gap-5">
+
+            <span className="font-semibold">
+              0{position}
+            </span>
             {item.question}
           </h3>
           <div
-            className={`ml-4 flex-shrink-0 p-1.5 rounded-full transition-all duration-500 ${
-              isActive ? "bg-purple-100" : "bg-gray-100"
-            } group-hover:bg-purple-100`}
+            className={`ml-4 flex-shrink-0 p-1.5 rounded-full transition-all duration-500  `}
           >
             <div
-              className={`transform transition-transform duration-500 ${
+              className={`transform transition-transform duration-500 ease-in-out ${
                 isActive ? "rotate-[135deg]" : "rotate-0"
               }`}
             >
-              <FiPlus className="h-5 w-5 text-gray-700" />
+              <FiPlus className="h-5 w-5 text-gray-900" />
             </div>
           </div>
         </button>
@@ -199,6 +203,7 @@ const Faq = () => {
             <AccordionItem
               key={index}
               item={item}
+              position={index+1}
               isActive={activeIndex === index}
               onClick={() => toggleItem(index)}
             />
