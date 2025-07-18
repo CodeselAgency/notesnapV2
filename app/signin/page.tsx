@@ -37,44 +37,10 @@ export default function SignIn() {
   return (
     <div
       className={cn(
-        "min-h-screen w-full flex items-center justify-center bg-[#FCFCFF] relative overflow-hidden",
+        "min-h-screen w-full flex items-center justify-center bg-[#DBDBDB]/50 relative overflow-hidden",
         outfit.className
       )}
     >
-      {/* Premium Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Gradient Mesh */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_0%_0%,_#4F46E5_0%,_transparent_50%)]" />
-          <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_100%_100%,_#7C3AED_0%,_transparent_50%)]" />
-        </div>
-
-        {/* Animated Gradient Orbs */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-blue-400/30 via-indigo-500/30 to-purple-600/30 blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-purple-400/30 via-violet-500/30 to-indigo-600/30 blur-3xl"
-        />
-      </div>
 
       {/* Main Content */}
       <motion.div
@@ -83,12 +49,24 @@ export default function SignIn() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-md px-4 relative z-10"
       >
-        {/* Logo Section */}
+        
+
+        {/* Card */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="bg-white  rounded-3xl p-10  border border-gray-200 shadow-sm relative overflow-hidden"
+        >
+
+          
+          <div className="relative">
+            {/* Logo Section */}
         <motion.div
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-center mb-12"
+          className="text-center"
         >
           <div className="inline-block">
             <Image
@@ -99,36 +77,24 @@ export default function SignIn() {
             />
           </div>
         </motion.div>
-
-        {/* Card */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-white/80 backdrop-blur-2xl rounded-3xl p-10 shadow-2xl shadow-indigo-500/10 border border-white/30 relative overflow-hidden"
-        >
-          {/* Card Background Effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/20 pointer-events-none" />
-
-          <div className="relative">
             {/* Header */}
             <div className="text-center mb-10">
               <motion.h1
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent mb-3"
+                className="text-3xl font-semibold text-black/80 font-inter mb-1"
               >
-                Welcome to NoteSnap
+                Welcome to Notesnap
               </motion.h1>
               <motion.p
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
-                className="text-gray-600"
+                className="text-gray-600 font-inter"
               >
                 Join{" "}
-                <span className="font-semibold text-indigo-600">10,000+</span>{" "}
+                <span className="font-regular text-blue-600 text-sm">10,000+</span>{" "}
                 students studying smarter
               </motion.p>
             </div>
@@ -153,17 +119,16 @@ export default function SignIn() {
               transition={{ duration: 0.5, delay: 0.6 }}
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full bg-white hover:bg-gray-50/80 text-gray-900 rounded-2xl px-6 py-4 shadow-lg shadow-indigo-500/5 border border-gray-200 cursor-pointer flex items-center justify-center gap-3 transition-all duration-300 group relative overflow-hidden"
+              className="w-full bg-white hover:bg-gray-50/80 text-gray-900 rounded-xl px-6 py-2 shadow-lg shadow-indigo-500/5 border border-gray-200 cursor-pointer flex items-center justify-center gap-3 transition-all duration-300 group relative overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-violet-500/10 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-x-[-100%] group-hover:translate-x-[100%]" />
-              <div className="bg-white rounded-full p-1.5 shadow-sm">
+              
+              <div className=" rounded-full p-1.5 ">
                 <FcGoogle className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
               </div>
               <span className="font-medium text-gray-800">
                 {loading ? "Signing in..." : "Continue with Google"}
               </span>
             </motion.button>
-
             {/* Terms */}
             <motion.p
               initial={{ y: 10, opacity: 0 }}
@@ -174,14 +139,14 @@ export default function SignIn() {
               By continuing, you agree to NoteSnap&apos;s{" "}
               <a
                 href="/terms-of-service"
-                className="font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                className="font-medium text-blue-600 transition-colors font-inter underline"
               >
                 Terms of Service
               </a>{" "}
               and{" "}
               <a
                 href="/privacypolicy"
-                className="font-medium text-indigo-600 hover:text-indigo-700 transition-colors"
+                className="font-medium text-blue-600 transition-colors font-inter underline"
               >
                 Privacy Policy
               </a>

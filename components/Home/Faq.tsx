@@ -134,17 +134,13 @@ const Faq = () => {
     }, [isActive]);
 
     return (
-      <div className={`mb-4 px-4 pb-2 py-1 rounded-xl transition-all duration-800 cursor-pointer border`}>
+      <div className={`mb-4 px-4 pb-2 py-1 rounded-xl transition-all duration-800 cursor-pointer border-1 shadow-2xs`}>
         <button
           onClick={onClick}
           className="flex justify-between items-center w-full text-left py-2 cursor-pointer group transition-all duration-300 ease-in "
           aria-expanded={isActive}
         >
-          <h3 className="text-md font-medium text-gray-900 transition-colors group-hover:text-gray-700 flex gap-5">
-
-            <span className="font-semibold">
-              0{position}
-            </span>
+          <h3 className="text-md  text-gray-900 transition-colors group-hover:text-gray-700 flex gap-5">
             {item.question}
           </h3>
           <div

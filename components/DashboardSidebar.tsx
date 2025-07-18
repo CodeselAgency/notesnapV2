@@ -359,7 +359,7 @@ export function DashboardSidebar({
       <div className="p-6 pb-4">
         <div className="flex items-center space-x-3">
           <div className="relative">
-            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-xl">
+            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center ">
               <Image src="/images/new-logo.png" alt="Logo" width={50} height={50} />
             </div>
             {/* <div className="absolute -top-1 -right-1">

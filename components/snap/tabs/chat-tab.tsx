@@ -20,6 +20,7 @@ import {
 } from "@/store/slices/chatSlice";
 import type { PdfData } from "@/constants/index";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { ChatLoader } from "@/components/ChatLoader";
 
 interface ChatTabProps {
   pdf: PdfData | null;
@@ -218,7 +219,7 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
                 >
                   
                   {message.message_type === "ai" && (
-                    <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <div className="w-8 h-8 bg-[#1A1A1A] rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
                       <Bot className="w-4 h-4 text-white" />
                     </div>
                   )}
@@ -268,23 +269,12 @@ export function ChatTabRedux({ pdf }: ChatTabProps) {
               ))}
 
               {isTyping && (
-                <div className="flex gap-3 justify-start">
+                <div className="flex gap-3 justify-start items-center">
                   <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center flex-shrink-0 shadow-lg">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
-                  <div className="bg-white border-2 border-black/5 rounded-xl rounded-bl-sm px-4 py-3">
-                    <div className="flex space-x-1">
-                      <div className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"></div>
-                      <div
-                        className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.1s" }}
-                      ></div>
-                      <div
-                        className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce"
-                        style={{ animationDelay: "0.2s" }}
-                      ></div>
-                    </div>
-                  </div>
+                  
+                  <ChatLoader />
                 </div>
               )}
             </div>
