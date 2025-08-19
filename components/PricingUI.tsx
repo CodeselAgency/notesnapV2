@@ -185,10 +185,10 @@ export function PricingUI({ products }: PricingUIProps) {
                   <span className="text-gray-500 ml-2">/{plan.name.toLowerCase()}</span>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-8">{plan.description}</p>
+                {/* <p className="text-gray-600 text-sm mb-8">{plan.description}</p> */}
 
                 <div className="mb-8">
-                  <div className="text-sm font-medium text-gray-900 mb-4">PREMIUM FEATURES</div>
+                  <div className="text-sm font-medium text-gray-900 mb-4">feautures include</div>
                   <ul className="space-y-4">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start">

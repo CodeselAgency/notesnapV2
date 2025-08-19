@@ -603,7 +603,7 @@ export function DashboardSidebar({
             </div>
             <button
               onClick={() => setIsSettingsModalOpen(true)}
-              className="p-2 hover:bg-black/5 rounded-lg transition-colors group"
+              className="p-2 hover:bg-black/5 rounded-lg transition-colors group cursor-pointer"
             >
               <Settings className="w-4 h-4 text-black/40 group-hover:text-black transition-all duration-200" />
             </button>

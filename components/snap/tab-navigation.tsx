@@ -31,9 +31,9 @@ export function TabNavigation({
                   onClick={() => onTabChange(tab.id)}
                   className={`${
                     activeTab === tab.id
-                      ? "bg-gradient-to-b from-zinc-600 to-zinc-900 text-white shadow-lg"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                  } px-3 sm:px-4 py-2 rounded-lg font-medium text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all duration-200 whitespace-nowrap flex-shrink-0 cursor-pointer`}
+                      ? "bg-[#232323] border border-[#444] text-white shadow-inner rounded-lg"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-2 border-white rounded-md"
+                  } px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 transition-all duration-200 whitespace-nowrap flex-shrink-0 cursor-pointer `}
                 >
                   <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                   <span>{tab.name}</span>
